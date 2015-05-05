@@ -65,7 +65,6 @@
                 alert("Usuario o contraseña incorrectos");
                 document.getElementById("elements").style.display = 'block';
                 setTimeout(aparecer,100);
-                
             }
         }
         
@@ -76,8 +75,7 @@
                 j+=2.5;
                 setTimeout(vaciar, 5);
             } else {
-                    document.location.href="inicio.html";
-                //setTimeout(enviar,500);
+                setTimeout(enviar,500);
             }
         }
         
@@ -88,7 +86,7 @@
             
             $.getJSON(archivoValidacion, { usuario:datosUsuario ,password:datosPassword}).done(function(respuestaServer) {
                 if(respuestaServer.validacion == "OK"){
-                    document.location.href="inicio.html";
+                    document.location.href="inicio.html?user="+datosUsuario;
                 }else{
                     setTimeout(llenar,100)
                 }

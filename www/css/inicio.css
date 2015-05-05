@@ -8,6 +8,9 @@
 }
 
 #botones {
-    width: auto;
     opacity: 0.0;
+}
+
+#boton{
+    width: 30%;   
 }
