@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="css/pedidos.css"/>
+        <title id="titulo">Pedidos</title>
+    </head>
+    <body id="fondo" onload="iniciar()">
+        <center>
+        </center>
+    </body>
+    <script>
+        var j = 0;
+        var k = 0;
+        var i = 1.0;
+        
+        
+        function gup( name ){
+            var regexS = "[\\?&]"+name+"=([^&#]*)";
+            var regex = new RegExp ( regexS );
+            var tmpURL = window.location.href;
+            var results = regex.exec( tmpURL );
+            if( results == null )
+                return"";
+            else
+                return results[1];
+        }
+        
+    </script>
+</html>

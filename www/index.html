@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login</title>
+        <link rel="stylesheet" href="css/index.css" />
+        <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>     
+    </head>
+    <body id="fondo">
+        <center>
+            <div id="elements">
+                <div>
+                    <img src="imagenes/logo.png">
+                </div>
+                <div id="id_data">
+                    <form id="formulario">
+                        Para darse de alta llamar al 922-22-22-22<br><br>
+                        Usuario:<br>
+                        <input type="text" id="usuario" name="usuario"><br><br>
+                        Contrase&ntilde;a:<br>
+                        <input type="password" id="clave" name="clave"><br><br>
+                        <input type="checkbox" id="recordarUsuario" name="recordarUsuario">Recordar usuario<br><br>
+                        <input type="checkbox" id="entrarAuto" name="entrarAuto">Entrar automaticamente<br><br>
+                    </form>
+                    <button onclick="iniciar()"> Entrar </button>
+                </div>
+            </div>
+        </center>
+    </body>
+    <script type="text/javascript">
+        var j = 0;
+        var k = 0;
+        var i = 1.0;
+        
+        function iniciar(){
+            j = -window.innerHeight + 280;
+            k = window.innerHeight - 280;            
+            setTimeout(desaparecer, 100);
+        }
+        
+        function desaparecer(){
+            if(i > 0){
+                i-=0.1;
+                document.getElementById("elements").style.opacity = i;
+                setTimeout(desaparecer,50);
+            } else {
+                document.getElementById("elements").style.display = 'none';
+                setTimeout(vaciar,200);
+            }
+        }
+        
+        function aparecer(){
+            if(i < 1){
+                i+=0.1;
+                document.getElementById("elements").style.opacity = i;
+                setTimeout(aparecer,50);
+            }
+        }
+        
+        function llenar(){
+            if (k > 0){
+                document.getElementById("fondo").style.backgroundPositionY = k + "px"
+                k-=2.5;
+                setTimeout(llenar, 5);
+            } else {
+                alert("Usuario o contraseña incorrectos");
+                document.getElementById("elements").style.display = 'block';
+                setTimeout(aparecer,100);
+                
+            }
+        }
+        
+        function vaciar(){
+            if (j < 0){
+                var t = j+k;
+                document.getElementById("fondo").style.backgroundPositionY = t + "px"
+                j+=2.5;
+                setTimeout(vaciar, 5);
+            } else {
+                    document.location.href="inicio.html";
+                //setTimeout(enviar,500);
+            }
+        }
+        
+        function enviar() {
+            var datosUsuario = $("#usuario").val()
+            var datosPassword = $("#clave").val()
+            archivoValidacion = "http://localhost/conexion.php?jsoncallback=?"
+            
+            $.getJSON(archivoValidacion, { usuario:datosUsuario ,password:datosPassword}).done(function(respuestaServer) {
+                if(respuestaServer.validacion == "OK"){
+                    document.location.href="inicio.html";
+                }else{
+                    setTimeout(llenar,100)
+                }
+            })
+        }
+    </script>
+</html>

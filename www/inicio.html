@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title id="titulo">Inicio</title>
+        <link rel="stylesheet" type="text/css" href="css/inicio.css"/>  
+    </head>
+    <body id="fondo" onLoad="iniciar()">
+        <center>
+            <div id="botones">
+                <div id="id_data">
+                    <input type="image" src="imagenes/pedidosButton.png" onclick="desaparecerPedidos()"/>
+                    <br><br>
+                    <input type="image" src="imagenes/ticketsButton.png" onclick="desaparecerTickets()"/>
+                </div>
+            </div>
+        </center>
+    </body>
+    <script type="text/javascript">
+        var j = 0;
+        var k = 0;
+        var i = 0.0;
+        
+        function iniciar(){
+            j = -window.innerHeight + 280;
+            k = window.innerHeight - 280;  
+            document.getElementById("fondo").style.backgroundPositionY = k + "px"           
+            setTimeout(aparecer, 100);
+        }
+        
+        function desaparecerPedidos(){
+            if(i > 0){
+                i-=0.1;
+                document.getElementById("botones").style.opacity = i;
+                setTimeout(desaparecerPedidos,50);
+            } else {
+                document.getElementById("botones").style.display = 'none';
+                setTimeout(llenarP,200);
+            }
+        }
+        
+        function desaparecerTickets(){
+            if(i > 0){
+                i-=0.1;
+                document.getElementById("botones").style.opacity = i;
+                setTimeout(desaparecerTickets,50);
+            } else {
+                document.getElementById("botones").style.display = 'none';
+                setTimeout(llenarT,200);
+            }
+        }
+        
+        function aparecer(){
+            if(i < 1){
+                i+=0.1;
+                document.getElementById("botones").style.opacity = i;
+                setTimeout(aparecer,50);
+            }
+        }
+        
+        function llenarP(){
+            if (k > 0){
+                document.getElementById("fondo").style.backgroundPositionY = k + "px"
+                k-=2.5;
+                setTimeout(llenarP, 5);
+            } else {
+                    document.location.href="pedidos.html";
+            }
+        }
+        
+        function llenarT(){
+            if (k > 0){
+                document.getElementById("fondo").style.backgroundPositionY = k + "px"
+                k-=2.5;
+                setTimeout(llenarT, 5);
+            } else {
+                    document.location.href="tickets.html";
+            }
+        }
+        
+        function gup( name ){
+            var regexS = "[\\?&]"+name+"=([^&#]*)";
+            var regex = new RegExp ( regexS );
+            var tmpURL = window.location.href;
+            var results = regex.exec( tmpURL );
+            if( results == null )
+                return"";
+            else
+                return results[1];
+        }
+    </script>
+</html>
