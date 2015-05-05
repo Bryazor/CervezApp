@@ -1,7 +1,7 @@
 <?PHP
-		$sitio="localhost";
+		$sitio="172.24.38.63";
         $base="debian2_db1";
-		$usuario="root";
-		$pass="";
+		$usuario="User";
+		$pass="root";
         $port=3306;
 ?>
