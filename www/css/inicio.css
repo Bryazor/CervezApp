@@ -4,11 +4,14 @@
 }
 
 #id_data {
-    padding-top: 150px;
+    padding: 150px;
+}
+
+#boton{
+    width: 900px;    
 }
 
 #botones {
-    width: 30%; 
     opacity: 0.0;
 }
 

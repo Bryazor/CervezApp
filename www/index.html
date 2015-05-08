@@ -3,7 +3,8 @@
     <head>
         <title>Login</title>
         <link rel="stylesheet" href="css/index.css" />
-        <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>     
+        <script src="js/jquery-1.11.3.min.js"></script> 
+        <script src="js/base_64.js"></script>     
     </head>
     <body id="fondo">
         <center>
@@ -79,9 +80,18 @@
             }
         }
         
+        function ejemplo(texto){
+            var encripta=Base64.encode(texto);//encripto la cadena
+            var des=Base64.decode(encripta);//desencripto la cadena
+            alert("La cadena "+texto+" encriptada es="+encripta);//muestro la cadena encriptada
+            alert("La cadena "+encripta+" desencriptada es="+des);//muestro la cadena desencriptada
+        }
+        
         function enviar() {
             var datosUsuario = $("#usuario").val()
             var datosPassword = $("#clave").val()
+            
+            setTimeout(ejemplo(datosUsuario),100)
             archivoValidacion = "http://localhost/conexion.php?jsoncallback=?"
             
             $.getJSON(archivoValidacion, { usuario:datosUsuario ,password:datosPassword}).done(function(respuestaServer) {

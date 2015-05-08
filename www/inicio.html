@@ -19,6 +19,7 @@
         var j = 0;
         var k = 0;
         var i = 0.0;
+        var usuario = gup("user");
         
         function iniciar(){
             j = -window.innerHeight + 280;
@@ -63,7 +64,7 @@
                 k-=2.5;
                 setTimeout(llenarP, 5);
             } else {
-                    document.location.href="pedidos.html";
+                    document.location.href="pedidos.html?user="+usuario;
             }
         }
         
@@ -73,7 +74,7 @@
                 k-=2.5;
                 setTimeout(llenarT, 5);
             } else {
-                    document.location.href="tickets.html";
+                    document.location.href="tickets.html?user="+usuario;
             }
         }
         

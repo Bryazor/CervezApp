@@ -1,18 +1,46 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" type="text/css" href="css/pedidos.css"/>
         <title id="titulo">Pedidos</title>
+        <link rel="stylesheet" type="text/css" href="css/pedidos.css"/>
+        <script src="js/jquery-1.11.3.min.js"></script> 
     </head>
     <body id="fondo" onload="iniciar()">
         <center>
+            <div id="datos">
+                <img src="imagenes/pedidos-title.png">
+                <table id="tabla">
+                    <tr><th>Prioridad</th><th>Fecha de alta</th><th>Fecha límite</th><th>Local</th><th>Estado</th></tr>
+                </table>
+            </div>
         </center>
     </body>
     <script>
-        var j = 0;
-        var k = 0;
-        var i = 1.0;
+        var i = 0.0;
+        var usuario = gup("user");
         
+         function iniciar(){    
+            setTimeout(cargarTabla,100);
+         }
+        
+        function cargarTabla(){
+            datosUsuario = usuario;
+            archivoValidacion = "http://localhost/listarPedidos.php?jsoncallback=?"
+
+            $.getJSON(archivoValidacion, {usuario:datosUsuario}).done(function(respuestaServer){
+                $("#tabla").append(respuestaServer.validacion);
+            })
+            
+            setTimeout(aparecer,100);
+        }
+        
+        function aparecer(){
+            if(i < 1){
+                i+=0.1;
+                document.getElementById("datos").style.opacity = i;
+                setTimeout(aparecer,50);
+            }
+        }
         
         function gup( name ){
             var regexS = "[\\?&]"+name+"=([^&#]*)";
@@ -25,5 +53,8 @@
                 return results[1];
         }
         
+        function verDetalles(event){
+            alert(event.target.parentNode.getAttribute("id"))
+        }
     </script>
 </html>
