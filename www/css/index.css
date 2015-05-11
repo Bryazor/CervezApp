@@ -1,6 +1,11 @@
 #fondo { 
     background: url('../imagenes/fondoLleno.png') no-repeat;
     background-position: center top;
+    /*background: url('../imagenes/fondoLleno.png') no-repeat fixed top;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;*/
 }
 
 #id_data {

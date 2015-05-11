@@ -90,7 +90,7 @@
             var datosPassword = $("#clave").val()
             
             setTimeout(ejemplo(datosUsuario),100)
-            archivoValidacion = "http://localhost/conexion.php?jsoncallback=?"
+            archivoValidacion = "ftp://cervezapp.esy.es/conexion.php?jsoncallback=?"
             
             $.getJSON(archivoValidacion, { usuario:datosUsuario ,password:datosPassword}).done(function(respuestaServer) {
                 if(respuestaServer.validacion == "OK"){
@@ -99,6 +99,14 @@
                     setTimeout(llenar,100)
                 }
             })
+            
+            /*$.getJSON(archivoValidacion, { usuario:datosUsuario ,password:datosPassword}).done(function(respuestaServer) {
+                if(respuestaServer.validacion == "OK"){
+                    document.location.href="inicio.html?user="+datosUsuario;
+                }else{
+                    setTimeout(llenar,100)
+                }
+            })*/
         }
     </script>
 </html>
