@@ -90,7 +90,7 @@
             var datosPassword = $("#clave").val()
             
             setTimeout(ejemplo(datosUsuario),100)
-            archivoValidacion = "ftp://cervezapp.esy.es/conexion.php?jsoncallback=?"
+            archivoValidacion = "http://cervezapp.esy.es/conexion.php?jsoncallback=?"
             
             $.getJSON(archivoValidacion, { usuario:datosUsuario ,password:datosPassword}).done(function(respuestaServer) {
                 if(respuestaServer.validacion == "OK"){
