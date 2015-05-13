@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title id="titulo">Tickets</title>
-        <link rel="stylesheet" type="text/css" href="css/tickets.css"/>
+        <title id="titulo">Pedidos</title>
+        <link rel="stylesheet" type="text/css" href="css/nuevoPedido.css"/>
         <script src="js/jquery-1.11.3.min.js"></script> 
     </head>
     <body id="fondo" onload="iniciar()">
         <center>
             <div id="datos">
-                <img src="imagenes/tickets-title.png">
+                <img src="imagenes/nuevo-title.png">
                 <table id="tabla">
-                    <tr><th>Prioridad</th><th>Fecha de alta</th><th>Fecha límite</th><th>Local</th><th>Estado</th><th>Tipo</th></tr>
+                    <tr><th>Prioridad</th><th>Fecha de alta</th><th>Fecha límite</th><th>Local</th><th>Estado</th></tr>
                 </table>
             </div>
         </center>
@@ -25,7 +25,7 @@
         
         function cargarTabla(){
             datosUsuario = usuario;
-            archivoValidacion = "http://cervezapp.esy.es/listarTickets.php?jsoncallback=?"
+            archivoValidacion = "http://cervezapp.esy.es/listarPedidos.php?jsoncallback=?"
 
             $.getJSON(archivoValidacion, {usuario:datosUsuario}).done(function(respuestaServer){
                 $("#tabla").append(respuestaServer.validacion);

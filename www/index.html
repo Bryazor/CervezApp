@@ -60,7 +60,7 @@
         function llenar(){
             if (k > 0){
                 document.getElementById("fondo").style.backgroundPositionY = k + "px"
-                k-=2.5;
+                k-=1;
                 setTimeout(llenar, 5);
             } else {
                 alert("Usuario o contraseña incorrectos");
@@ -73,7 +73,7 @@
             if (j < 0){
                 var t = j+k;
                 document.getElementById("fondo").style.backgroundPositionY = t + "px"
-                j+=2.5;
+                j+=1;
                 setTimeout(vaciar, 5);
             } else {
                 setTimeout(enviar,500);
@@ -99,14 +99,6 @@
                     setTimeout(llenar,100)
                 }
             })
-            
-            /*$.getJSON(archivoValidacion, { usuario:datosUsuario ,password:datosPassword}).done(function(respuestaServer) {
-                if(respuestaServer.validacion == "OK"){
-                    document.location.href="inicio.html?user="+datosUsuario;
-                }else{
-                    setTimeout(llenar,100)
-                }
-            })*/
         }
     </script>
 </html>
