@@ -60,8 +60,8 @@
         function llenar(){
             if (k > 0){
                 document.getElementById("fondo").style.backgroundPositionY = k + "px"
-                k-=1;
-                setTimeout(llenar, 5);
+                k-=2;
+                setTimeout(llenar, 2);
             } else {
                 alert("Usuario o contraseña incorrectos");
                 document.getElementById("elements").style.display = 'block';
@@ -73,8 +73,8 @@
             if (j < 0){
                 var t = j+k;
                 document.getElementById("fondo").style.backgroundPositionY = t + "px"
-                j+=1;
-                setTimeout(vaciar, 5);
+                j+=2;
+                setTimeout(vaciar, 2);
             } else {
                 setTimeout(enviar,500);
             }

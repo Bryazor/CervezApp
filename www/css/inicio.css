@@ -10,3 +10,7 @@
 #botones {
     opacity: 0.0;
 }
+
+#boton { 
+    width: 50%;   
+}
