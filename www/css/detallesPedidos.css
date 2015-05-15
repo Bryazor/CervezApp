@@ -9,17 +9,17 @@
 
 #tabla{
     margin-top: 150px;
+    width: 50%;
+}
+
+table {
+    font-family: Helvetica,Arial;
 }
 
 #boton {
     margin-left: 3%;       
     margin-right: 3%; 
     height: 40%;
-}
-
-table {
-    font-family: Helvetica,Arial;
-    width: 80%;
 }
  
 td, th{
@@ -49,6 +49,11 @@ table tr:last-child td:first-child {
 table tr:last-child td:last-child {
     border-radius:0px 0px 10px 0px;
 }
+
+table td:last-child {
+    text-align: right;
+}
+
 
 table tr:nth-child(2n) {
     background: #f0c002;

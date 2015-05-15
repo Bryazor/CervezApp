@@ -1,0 +1,20 @@
+#fondo { 
+    background: url('../imagenes/fondoLleno.png') no-repeat;
+    background-position: center top;
+}
+
+#datos{
+    opacity: 0.0;
+    margin-top: 150px;
+}
+
+textarea {
+   resize: none;
+    width: 90%;
+}
+
+#boton {
+    margin-left: 3%;       
+    margin-right: 3%; 
+    height: 40%;
+}

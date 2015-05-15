@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title id="titulo">Detalles Ticket</title>
+        <link rel="stylesheet" type="text/css" href="css/detallesTicket.css"/>
+        <script src="js/jquery-1.11.3.min.js"></script> 
+    </head>
+    <body id="fondo" onload="iniciar()">
+        <center>
+            <img src="imagenes/detalles-title.PNG">
+            <div id="datos">
+                Descripcion:
+                <br>
+                <br>
+                <textarea rows="25" cols="50" wrap="soft"></textarea>
+                <br><br>
+                Tipo:
+                <select>
+                    <option value="1">Tipo 1</option>
+                    <option value="2">Tipo 2</option>
+                </select>
+                Prioridad:
+                <select>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+                <br>
+                <br>
+                <br>
+                Fecha límite:
+                <input type="date" name="fecha">
+                <br><br>
+                <input id="boton" type="image" src="imagenes/cancelar.png" onclick="desaparecerAtras()"/>
+                <input id="boton" type="image" src="imagenes/guardar.png" onclick="desaparecerNuevo()"/>
+                
+            </div>
+        </center>
+    </body>
+    <script>
+        var i = 0.0;
+        var usuario = gup("user");
+        var idPedido = gup("idPedido");
+        
+         function iniciar(){ 
+             setTimeout(cargarTabla,100);
+         }
+        
+        function cargarTabla(){
+            //archivoValidacion = "http://localhost/detallesPedidos.php?jsoncallback=?"
+            archivoValidacion = "http://cervezapp.esy.es/detallesPedido.php?jsoncallback=?"
+
+            $.getJSON(archivoValidacion, {idPedido:idPedido}).done(function(respuestaServer){
+                $("#tabla").append(respuestaServer.validacion);
+            })
+            
+            setTimeout(aparecer,500);
+        }
+        
+        function aparecer(){
+            
+            if(i < 1){
+                i+=0.1;
+                document.getElementById("datos").style.opacity = i;
+                setTimeout(aparecer,50);
+            }
+        }
+        
+        function irA(url){
+            document.location.href=url;
+        }
+        
+        function desaparecerAtras(){
+            if(i > 0){
+                i-=0.1;
+                document.getElementById("datos").style.opacity = i;
+                setTimeout(desaparecerAtras,50);
+            } else {
+                irA("pedidos.html?idPedido="+idPedido);
+            }
+        }
+        
+        function gup( name ){
+            var regexS = "[\\?&]"+name+"=([^&#]*)";
+            var regex = new RegExp ( regexS );
+            var tmpURL = window.location.href;
+            var results = regex.exec( tmpURL );
+            if( results == null )
+                return"";
+            else
+                return results[1];
+        }
+    </script>
+</html>

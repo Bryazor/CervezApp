@@ -12,12 +12,18 @@
                 <table id="tabla">
                     <tr><th>Prioridad</th><th>Fecha de alta</th><th>Fecha límite</th><th>Local</th><th>Estado</th></tr>
                 </table>
+                <br><br>
+                <input id="boton" type="image" src="imagenes/atras.PNG" onclick="desaparecerAtras()"/>
+                <input id="boton" type="image" src="imagenes/nuevo.png" onclick="desaparecerNuevo()"/>
             </div>
         </center>
     </body>
     <script>
         var i = 0.0;
+        var j = 0;
+        var k = 0;
         var usuario = gup("user");
+        var idPedido = "";
         
          function iniciar(){    
             setTimeout(cargarTabla,100);
@@ -25,6 +31,7 @@
         
         function cargarTabla(){
             datosUsuario = usuario;
+            //archivoValidacion = "http://localhost/listarPedidos.php?jsoncallback=?"
             archivoValidacion = "http://cervezapp.esy.es/listarPedidos.php?jsoncallback=?"
 
             $.getJSON(archivoValidacion, {usuario:datosUsuario}).done(function(respuestaServer){
@@ -42,6 +49,53 @@
             }
         }
         
+        function irA(url){
+            document.location.href=url;
+        }
+        
+        function desaparecerNuevo(){
+            if(i > 0){
+                i-=0.1;
+                document.getElementById("datos").style.opacity = i;
+                setTimeout(desaparecerNuevo,50);
+            } else {
+                irA("nuevoPedido.html?user="+usuario);
+            }
+        }
+        
+        function desaparecerDetralles(){
+            if(i > 0){
+                i-=0.1;
+                document.getElementById("datos").style.opacity = i;
+                setTimeout(desaparecerDetralles,50);
+            } else {
+                irA("detallesPedido.html?idPedido="+idPedido+"&user="+usuario);
+            }
+        }
+        
+        function vaciar(){
+            if (j < 0){
+                var t = j+k;
+                document.getElementById("fondo").style.backgroundPositionY = t + "px"
+                j+=2.5;
+                setTimeout(vaciar, 1);
+            } else {
+                 irA("inicio.html?user="+usuario);
+            }
+        }
+        
+        function desaparecerAtras(){
+            if(i > 0){
+                i-=0.1;
+                document.getElementById("datos").style.opacity = i;
+                setTimeout(desaparecerAtras,50);
+            } else {
+            j = -window.innerHeight + 280;
+            k = window.innerHeight - 280; 
+                setTimeout(vaciar,100);
+            }
+        }
+        
         function gup( name ){
             var regexS = "[\\?&]"+name+"=([^&#]*)";
             var regex = new RegExp ( regexS );
@@ -54,7 +108,9 @@
         }
         
         function verDetalles(event){
-            alert(event.target.parentNode.getAttribute("id"))
+            setTimeout(desaparecerDetralles,50);
+            idPedido = event.target.parentNode.getAttribute("id");
+            
         }
     </script>
 </html>

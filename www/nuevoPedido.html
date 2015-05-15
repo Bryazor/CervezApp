@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title id="titulo">Pedidos</title>
+        <title id="titulo"> Nuevo Pedidos</title>
         <link rel="stylesheet" type="text/css" href="css/nuevoPedido.css"/>
         <script src="js/jquery-1.11.3.min.js"></script> 
     </head>
@@ -10,7 +10,7 @@
             <div id="datos">
                 <img src="imagenes/nuevo-title.png">
                 <table id="tabla">
-                    <tr><th>Prioridad</th><th>Fecha de alta</th><th>Fecha límite</th><th>Local</th><th>Estado</th></tr>
+                    <tr><th rowspan="2">Producto</th><th>Cantidad</th></tr>
                 </table>
             </div>
         </center>
@@ -25,12 +25,11 @@
         
         function cargarTabla(){
             datosUsuario = usuario;
-            archivoValidacion = "http://cervezapp.esy.es/listarPedidos.php?jsoncallback=?"
+            archivoValidacion = "http://cervezapp.esy.es/listarProductos.php?jsoncallback=?"
 
             $.getJSON(archivoValidacion, {usuario:datosUsuario}).done(function(respuestaServer){
                 $("#tabla").append(respuestaServer.validacion);
             })
-            
             setTimeout(aparecer,100);
         }
         

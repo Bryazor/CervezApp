@@ -9,6 +9,13 @@
 
 #tabla{
     margin-top: 150px;
+    width: 80%;
+}
+
+#boton {
+    margin-left: 3%;       
+    margin-right: 3%; 
+    height: 40%;
 }
 
 table {
