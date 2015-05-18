@@ -15,12 +15,12 @@
                 <textarea rows="25" cols="50" wrap="soft"></textarea>
                 <br><br>
                 Tipo:
-                <select>
+                <select id="tipoTicket">
                     <option value="1">Tipo 1</option>
                     <option value="2">Tipo 2</option>
                 </select>
                 Prioridad:
-                <select>
+                <select id="prioridad">
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
@@ -47,8 +47,8 @@
          }
         
         function cargarTabla(){
-            //archivoValidacion = "http://localhost/detallesPedidos.php?jsoncallback=?"
-            archivoValidacion = "http://cervezapp.esy.es/detallesPedido.php?jsoncallback=?"
+            archivoValidacion = "http://localhost/detallesPedidos.php?jsoncallback=?"
+            //archivoValidacion = "http://cervezapp.esy.es/detallesPedido.php?jsoncallback=?"
 
             $.getJSON(archivoValidacion, {idPedido:idPedido}).done(function(respuestaServer){
                 $("#tabla").append(respuestaServer.validacion);
@@ -57,8 +57,7 @@
             setTimeout(aparecer,500);
         }
         
-        function aparecer(){
-            
+        function aparecer(){            
             if(i < 1){
                 i+=0.1;
                 document.getElementById("datos").style.opacity = i;

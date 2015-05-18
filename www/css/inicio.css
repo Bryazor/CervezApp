@@ -13,5 +13,7 @@
 }
 
 #boton { 
-    height: 40%;   
+    height:auto;
+    width:100%;
+  
 }
