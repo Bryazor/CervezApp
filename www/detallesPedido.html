@@ -27,8 +27,8 @@
         }
         
         function cargarTabla(){
-            //archivoValidacion = "http://localhost/detallesPedidos.php?jsoncallback=?"
-            archivoValidacion = "http://cervezapp.esy.es/detallesPedido.php?jsoncallback=?"
+            archivoValidacion = "http://localhost/detallesPedidos.php?jsoncallback=?"
+            //archivoValidacion = "http://cervezapp.esy.es/detallesPedido.php?jsoncallback=?"
 
             $.getJSON(archivoValidacion, {idPedido:idPedido}).done(function(respuestaServer){
                 $("#tabla").append(respuestaServer.validacion);

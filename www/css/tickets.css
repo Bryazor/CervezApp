@@ -8,7 +8,8 @@
 }
 
 #tabla{
-    margin-top: 150px;
+    margin-top: 19%;
+    width: 90%;
 }
 
 #boton {
@@ -18,12 +19,12 @@
 }
 
 table {
-    font-family: Helvetica,Arial;
-    width: 80%;
+    font-family: arial;
+    font-size: 12px;
 }
  
 td, th{
-    padding:6px;
+    padding:3px;
 }
 
 th{
@@ -33,6 +34,10 @@ th{
 /*Primera fila, primera celda*/
 table tr:first-child th:first-child {
     border-radius:10px 0px 0px 0px;
+}
+
+td:first-Child{
+    text-align: center
 }
  
 /*Primera fila, última celda*/

@@ -8,12 +8,8 @@
 }
 
 #tabla{
-    margin-top: 150px;
-    width: 50%;
-}
-
-table {
-    font-family: Helvetica,Arial;
+    margin-top: 19%;
+    width: 90%;
 }
 
 #boton {
@@ -21,9 +17,14 @@ table {
     margin-right: 3%; 
     height: 40%;
 }
+
+table {
+    font-family: arial;
+    font-size: 12px;
+}
  
 td, th{
-    padding:6px;
+    padding:3px;
 }
 
 th{
@@ -33,6 +34,11 @@ th{
 /*Primera fila, primera celda*/
 table tr:first-child th:first-child {
     border-radius:10px 0px 0px 0px;
+}
+
+td:last-Child{
+    width:10%;
+    text-align: center
 }
  
 /*Primera fila, última celda*/
@@ -49,11 +55,6 @@ table tr:last-child td:first-child {
 table tr:last-child td:last-child {
     border-radius:0px 0px 10px 0px;
 }
-
-table td:last-child {
-    text-align: right;
-}
-
 
 table tr:nth-child(2n) {
     background: #f0c002;
