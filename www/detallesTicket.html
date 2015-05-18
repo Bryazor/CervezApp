@@ -7,33 +7,34 @@
     </head>
     <body id="fondo" onload="iniciar()">
         <center>
-            <img src="imagenes/detalles-title.PNG">
             <div id="datos">
-                Descripcion:
-                <br>
-                <br>
-                <textarea rows="25" cols="50" wrap="soft"></textarea>
-                <br><br>
-                Tipo:
-                <select id="tipoTicket">
-                    <option value="1">Tipo 1</option>
-                    <option value="2">Tipo 2</option>
-                </select>
-                Prioridad:
-                <select id="prioridad">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                </select>
-                <br>
-                <br>
-                <br>
-                Fecha límite:
-                <input type="date" name="fecha">
-                <br><br>
-                <input id="boton" type="image" src="imagenes/cancelar.png" onclick="desaparecerAtras()"/>
-                <input id="boton" type="image" src="imagenes/guardar.png" onclick="desaparecerNuevo()"/>
-                
+                <img src="imagenes/detalles-title.PNG">
+                <div id="form">
+                    Descripcion:
+                    <br>
+                    <br>
+                    <textarea rows="10"  wrap="soft"></textarea>
+                    <br><br>
+                    Tipo:
+                    <select id="tipoTicket">
+                        <option value="1">Tipo 1</option>
+                        <option value="2">Tipo 2</option>
+                    </select>
+                    Prioridad:
+                    <select id="prioridad">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                    <br>
+                    <br>
+                    <br>
+                    Fecha límite:
+                    <input type="date" name="fecha">
+                    <br><br>
+                    <input id="boton" type="image" src="imagenes/cancelar.png" onclick="desaparecerAtras()"/>
+                    <input id="boton" type="image" src="imagenes/guardar.png" onclick="desaparecerNuevo()"/>
+                </div>
             </div>
         </center>
     </body>
@@ -75,7 +76,7 @@
                 document.getElementById("datos").style.opacity = i;
                 setTimeout(desaparecerAtras,50);
             } else {
-                irA("pedidos.html?idPedido="+idPedido);
+                irA("tickets.html?user="+usuario);
             }
         }
         
