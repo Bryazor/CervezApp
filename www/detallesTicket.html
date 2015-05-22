@@ -64,10 +64,10 @@
             document.getElementById("id").value = idTicket;
             
             //-----------------------------CargarDetalles---------------------------------//
-            //archivoValidacion = "http://localhost/cargarDetallesTicket.php?jsoncallback=?"
-            //archivoValidacion = "http://cervezapp.esy.es/detallesPedido.php?jsoncallback=?"
+//            cargarDetallesTicket = "http://localhost/cargarDetallesTicket.php?jsoncallback=?"
+            cargarDetallesTicket = "http://cervezapp.esy.es/cargarDetallesTicket.php?jsoncallback=?"
 
-            $.getJSON("http://localhost/cargarDetallesTicket.php?jsoncallback=?", {idTicket:idTicket}).done(function(respuestaServer){
+            $.getJSON(cargarDetallesTicket, {idTicket:idTicket}).done(function(respuestaServer){
                 prioridad = respuestaServer.prioridad;
                 fechaAlta = respuestaServer.fechaAlta;           
                 document.getElementById("fechaAlta").value = formatearFecha(fechaAlta);
@@ -87,20 +87,23 @@
         function cargarCombos(){
 
             //-----------------------------PRIORIDAD---------------------------------//
-            //archivoValidacion = "http://localhost/cargarPrioridades.php?jsoncallback=?"
-            $.getJSON("http://localhost/cargarPrioridades.php?jsoncallback=?", {prioridad:prioridad}).done(function(respuestaServer){
+            //cargarPrioridadesNuevo = "http://localhost/cargarPrioridades.php?jsoncallback=?"
+            cargarPrioridadesNuevo = "http://cervezapp.esy.es/cargarPrioridades.php?jsoncallback=?"
+            $.getJSON(cargarPrioridadesNuevo).done(function(respuestaServer){
                 $("#prioridad").append(respuestaServer.validacion);
             });
             
             //-----------------------------LOCAL---------------------------------//
-            //archivoValidacion = "http://localhost/cargarPrioridades.php?jsoncallback=?"
-            $.getJSON("http://localhost/cargarLocales.php?jsoncallback=?", {usuario:usuario, local:local}).done(function(respuestaServer){
+            //cargarLocalesNuevo = "http://localhost/cargarLocalesNuevo.php?jsoncallback=?"
+            cargarLocalesNuevo = "http://cervezapp.esy.es/cargarLocalesNuevo.php?jsoncallback=?"
+            $.getJSON(cargarLocalesNuevo, {usuario:usuario, local:local}).done(function(respuestaServer){
                 $("#local").append(respuestaServer.validacion);
             });
             
             //-----------------------------TIPOTICKETS---------------------------------//
-            //archivoValidacion = "http://localhost/cargarPrioridades.php?jsoncallback=?"
-            $.getJSON("http://localhost/cargarTipoTicket.php?jsoncallback=?", {tipoTicket:tipoTicket}).done(function(respuestaServer){
+            //cargarTipoTicketNuevo = "http://localhost/cargarTipoTicketNuevo.php?jsoncallback=?"
+            cargarTipoTicketNuevo = "http://cervezapp.esy.es/cargarTipoTicketNuevo.php?jsoncallback=?"
+            $.getJSON(cargarTipoTicketNuevo, {tipoTicket:tipoTicket}).done(function(respuestaServer){
                 $("#tipoTicket").append(respuestaServer.tipoTicket);
             });
             
@@ -135,8 +138,10 @@
             descripcion = document.getElementById("descripcion").value;
             local = document.getElementById("local").value;
             tipoTicket = document.getElementById("tipoTicket").value;
-        
-            $.getJSON("http://localhost/guardarCambiosTicket.php", {idTicket:idTicket,prioridad:prioridad,fechaLimite:fechaLimite,descripcion:descripcion,local:local,tipoTicket:tipoTicket})
+            
+//            guardarCambiosTicket = "http://localhost/guardarCambiosTicket.php";
+            guardarCambiosTicket = "http://cervezapp.esy.es/guardarCambiosTicket.php";
+            $.getJSON(guardarCambiosTicket, {idTicket:idTicket,prioridad:prioridad,fechaLimite:fechaLimite,descripcion:descripcion,local:local,tipoTicket:tipoTicket})
         }
         
         function formatearFecha(fecha){

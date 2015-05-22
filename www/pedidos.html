@@ -44,8 +44,8 @@
             datosUsuario = usuario;
            
             //-----------------------------CargarTabla---------------------------------//
-            archivoValidacion = "http://localhost/listarPedidos.php?jsoncallback=?"
-//            archivoValidacion = "http://cervezapp.esy.es/listarPedidos.php?jsoncallback=?"
+//            archivoValidacion = "http://localhost/listarPedidos.php?jsoncallback=?"
+            archivoValidacion = "http://cervezapp.esy.es/listarPedidos.php?jsoncallback=?"
 
             $.getJSON(archivoValidacion, {usuario:datosUsuario}).done(function(respuestaServer){
                 $("#tabla").append(respuestaServer.validacion);

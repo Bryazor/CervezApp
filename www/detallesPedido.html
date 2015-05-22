@@ -57,10 +57,10 @@
             document.getElementById("id").value = idPedido;
             
             //-----------------------------CargarDetalles---------------------------------//
-            //archivoValidacion = "http://localhost/cargarDetallesPedido.php?jsoncallback=?"
-            //archivoValidacion = "http://cervezapp.esy.es/detallesPedido.php?jsoncallback=?"
+//            cargarDetallesPedido = "http://localhost/cargarDetallesPedido.php?jsoncallback=?"
+            cargarDetallesPedido = "http://cervezapp.esy.es/detallesPedido.php?jsoncallback=?"
 
-            $.getJSON("http://localhost/cargarDetallesPedido.php?jsoncallback=?", {idPedido:idPedido}).done(function(respuestaServer){          
+            $.getJSON(cargarDetallesPedido, {idPedido:idPedido}).done(function(respuestaServer){          
                       
                 prioridad = respuestaServer.prioridad;
                 fechaAlta = respuestaServer.fechaAlta;           
@@ -77,20 +77,23 @@
         
         function cargarCombos(){
             //-----------------------------PRIORIDAD---------------------------------//
-            //archivoValidacion = "http://localhost/cargarPrioridades.php?jsoncallback=?"
-            $.getJSON("http://localhost/cargarPrioridades.php?jsoncallback=?", {prioridad:prioridad}).done(function(respuestaServer){
+            //cargarPrioridades = "http://localhost/cargarPrioridades.php?jsoncallback=?"
+            cargarPrioridades = "http://cervezapp.esy.es/cargarPrioridades.php?jsoncallback=?"
+            $.getJSON(cargarPrioridades, {prioridad:prioridad}).done(function(respuestaServer){
                 $("#prioridad").append(respuestaServer.validacion);
             });
             
             //-----------------------------LOCAL---------------------------------//
-            //archivoValidacion = "http://localhost/cargarPrioridades.php?jsoncallback=?"
-            $.getJSON("http://localhost/cargarLocales.php?jsoncallback=?", {usuario:usuario, local:local}).done(function(respuestaServer){
+            //cargarLocales = "http://localhost/cargarLocales.php?jsoncallback=?"
+            cargarLocales = "http://cervezapp.esy.es/cargarLocales.php?jsoncallback=?"
+            $.getJSON(cargarLocales, {usuario:usuario, local:local}).done(function(respuestaServer){
                 $("#local").append(respuestaServer.validacion);
             });
             
             //-----------------------------PRODUCTOS---------------------------------//
-            //archivoValidacion = "http://localhost/cargarPrioridades.php?jsoncallback=?"
-            $.getJSON("http://localhost/cargarProductos.php?jsoncallback=?", {usuario:usuario}).done(function(respuestaServer){
+            //cargarProductos = "http://localhost/cargarProductos.php?jsoncallback=?"
+            cargarProductos = "http://cervezapp.esy.es/cargarProductos.php?jsoncallback=?"
+            $.getJSON(cargarProductos, {usuario:usuario}).done(function(respuestaServer){
                 $("#producto").append(respuestaServer.validacion);
             });
             
@@ -99,10 +102,10 @@
         
         function cargarTabla(){
             //-----------------------------CargarTabla---------------------------------//
-            //archivoValidacion = "http://localhost/detallesPedidos.php?jsoncallback=?"
-            //archivoValidacion = "http://cervezapp.esy.es/detallesPedido.php?jsoncallback=?"
+            //detallesPedidos = "http://localhost/detallesPedidos.php?jsoncallback=?"
+            detallesPedidos = "http://cervezapp.esy.es/detallesPedido.php?jsoncallback=?"
 
-            $.getJSON("http://localhost/detallesPedidos.php?jsoncallback=?", {idPedido:idPedido}).done(function(respuestaServer){
+            $.getJSON(detallesPedidos, {idPedido:idPedido}).done(function(respuestaServer){
                 $("#tabla").append(respuestaServer.validacion);
             });
             
@@ -139,7 +142,10 @@
                 }                
             }
             catch(err) {
-                $.getJSON("http://localhost/nombreProducto.php?jsoncallback=?", {producto:producto}).done(function(respuestaServer){
+                //nombreProducto = "http://localhost/nombreProducto.php?jsoncallback=?"
+                nombreProducto = "http://cervezapp.esy.es/nombreProducto.php?jsoncallback=?"
+
+                $.getJSON(nombreProducto, {producto:producto}).done(function(respuestaServer){
                     producto = respuestaServer.validacion;
                     $("#tabla").append("<tr><td><input id="+idProducto+" class= \"eliminarButton\" type=\"image\" src=\"imagenes/eliminar.PNG\" onclick=\"eliminar("+idProducto+")\"/>"+producto+"</td><td>"+cantidad+"</td></tr>");           
                 document.getElementById("cantidad").value = "";

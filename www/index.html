@@ -89,8 +89,8 @@
             var datosUsuario = $("#usuario").val()
             var datosPassword = $("#clave").val()
             
-            //archivoValidacion = "http://cervezapp.esy.es/conexion.php?jsoncallback=?"
-            archivoValidacion = "http://localhost/conexion.php?jsoncallback=?"
+            archivoValidacion = "http://cervezapp.esy.es/conexion.php?jsoncallback=?"
+//            archivoValidacion = "http://localhost/conexion.php?jsoncallback=?"
             
             $.getJSON(archivoValidacion, { usuario:datosUsuario ,password:datosPassword}).done(function(respuestaServer) {
                 if(respuestaServer.validacion == "OK"){

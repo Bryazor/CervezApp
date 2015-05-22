@@ -35,10 +35,10 @@
         
         function cargarTabla(){
             datosUsuario = usuario;
-            archivoValidacion = "http://localhost/listarTickets.php?jsoncallback=?"
-            //archivoValidacion = "http://cervezapp.esy.es/listarTickets.php?jsoncallback=?"
+//            listarTickets = "http://localhost/listarTickets.php?jsoncallback=?"
+            listarTickets = "http://cervezapp.esy.es/listarTickets.php?jsoncallback=?"
 
-            $.getJSON(archivoValidacion, {usuario:datosUsuario}).done(function(respuestaServer){
+            $.getJSON(listarTickets, {usuario:datosUsuario}).done(function(respuestaServer){
                 $("#tabla").append(respuestaServer.validacion);
             })
             
