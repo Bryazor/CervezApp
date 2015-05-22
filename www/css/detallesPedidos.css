@@ -3,26 +3,73 @@
     background-position: center top;
 }
 
+#detalles{
+    margin-top: 15%;
+    font-family: arial;
+}
+
+#id{
+    text-align: center;
+    margin-right: 3%;
+    width: 5%;   
+}
+
+#prioridad{
+    margin-right: 3%;
+    width: 10%;   
+}
+
+#estado{
+    text-align: center;
+    width: 30%;
+}
+
+#local{
+    width: 70%;
+}
+
 #datos{
     opacity: 0.0;
 }
 
 #tabla{
-    margin-top: 19%;
+    text-align: center;
+    margin-top: 5%;
     width: 90%;
+}
+
+#producto{
+    text-align: center;
+    width: 30%;
+}
+
+#cantidad{
+    text-align: center;
+    width: 10%;
 }
 
 #boton {
     margin-left: 3%;       
     margin-right: 3%; 
-    height: 40%;
+    width: 20%
 }
 
-table {
-    font-family: arial;
-    font-size: 12px;
+#botonTablaMas {
+    margin-left: 80%;
+    width: 10%
 }
- 
+
+.eliminarButton {  
+    width: 5%;
+    margin-top: 2%;
+    margin-left: 2%;
+    margin-right: 10%;
+}
+
+table td:first-child {
+    text-align: left;
+}
+
 td, th{
     padding:3px;
 }
@@ -31,14 +78,17 @@ th{
     background: #FFF;
 }
 
+tr{
+    height: 30px;
+}
+
 /*Primera fila, primera celda*/
 table tr:first-child th:first-child {
     border-radius:10px 0px 0px 0px;
 }
 
-td:last-Child{
-    width:10%;
-    text-align: center
+th:last-Child{
+    width:15%;
 }
  
 /*Primera fila, última celda*/

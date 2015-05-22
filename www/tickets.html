@@ -9,9 +9,13 @@
         <center>
             <div id="datos">
                 <img src="imagenes/tickets-title.png">
-                <table id="tabla">
-                    <tr><th>Prioridad</th><th>Fecha de alta</th><th>Fecha límite</th><th>Local</th><th>Estado</th><th>Tipo</th></tr>
-                </table>
+                <table id="encabezado">
+                    <tr><th>Prio.</th><th>Alta</th><th class="local">Local</th><th>Estado</th></tr>
+                </table>                
+                <div id="scrollTabla">
+                    <table id="tabla">
+                    </table>
+                </div>
                 <br><br>
                 <input id="boton" type="image" src="imagenes/atras.PNG" onclick="desaparecerAtras()"/>
                 <input id="boton" type="image" src="imagenes/nuevo.png" onclick="desaparecerNuevo()"/>
@@ -27,12 +31,12 @@
         
         function iniciar(){  
             setTimeout(cargarTabla,100);
-         }
+        }
         
         function cargarTabla(){
             datosUsuario = usuario;
-            //archivoValidacion = "http://localhost/listarTickets.php?jsoncallback=?"
-            archivoValidacion = "http://cervezapp.esy.es/listarTickets.php?jsoncallback=?"
+            archivoValidacion = "http://localhost/listarTickets.php?jsoncallback=?"
+            //archivoValidacion = "http://cervezapp.esy.es/listarTickets.php?jsoncallback=?"
 
             $.getJSON(archivoValidacion, {usuario:datosUsuario}).done(function(respuestaServer){
                 $("#tabla").append(respuestaServer.validacion);
@@ -45,7 +49,7 @@
             if(i < 1){
                 i+=0.1;
                 document.getElementById("datos").style.opacity = i;
-                setTimeout(aparecer,50);
+                setTimeout(aparecer,25);
             }
         }
         
@@ -57,7 +61,7 @@
             if(i > 0){
                 i-=0.1;
                 document.getElementById("datos").style.opacity = i;
-                setTimeout(desaparecerNuevo,50);
+                setTimeout(desaparecerNuevo,25);
             } else {
                 irA("nuevoTicket.html?user="+usuario);
             }
@@ -67,7 +71,7 @@
             if(i > 0){
                 i-=0.1;
                 document.getElementById("datos").style.opacity = i;
-                setTimeout(desaparecerDetralles,50);
+                setTimeout(desaparecerDetralles,25);
             } else {
                 irA("detallesTicket.html?idTicket="+idTicket+"&user="+usuario);
             }
@@ -88,7 +92,7 @@
             if(i > 0){
                 i-=0.1;
                 document.getElementById("datos").style.opacity = i;
-                setTimeout(desaparecerAtras,50);
+                setTimeout(desaparecerAtras,25);
             } else {
             j = -window.innerHeight + 280;
             k = window.innerHeight - 280; 
@@ -109,7 +113,7 @@
         
         function verDetalles(event){
              idTicket = event.target.parentNode.getAttribute("id");
-            setTimeout(desaparecerDetralles,50);
+            setTimeout(desaparecerDetralles,25);
         }
     </script>
 </html>

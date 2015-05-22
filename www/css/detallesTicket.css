@@ -3,21 +3,46 @@
     background-position: center top;
 }
 
+#titulo{
+    width: 90%;
+}
+
 #datos{
     opacity: 0.0;
 }
+#id{
+    text-align: center;
+    margin-right: 3%;
+    width: 5%;   
+}
+
+#prioridad{
+    margin-right: 3%;
+    width: 10%;   
+}
+
+#estado{
+    text-align: center;
+    width: 30%;
+}
 
 #form{
-    margin-top: 17%;
+    font-family: arial;
+    margin-top: 15%;
+}
+
+#local{
+    width: 70%;
 }
 
 textarea {
-   resize: none;
+    font-family: arial;
+    resize: none;
     width: 90%;
 }
 
 #boton {
     margin-left: 3%;       
     margin-right: 3%; 
-    height: 40%;
+    width: 20%
 }

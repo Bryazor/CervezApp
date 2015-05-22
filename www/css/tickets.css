@@ -8,14 +8,15 @@
 }
 
 #tabla{
-    margin-top: 19%;
+    margin-top: 17%;
     width: 90%;
+    text-align: center;
 }
 
 #boton {
     margin-left: 3%;       
     margin-right: 3%; 
-    height: 40%;
+    width: 20%
 }
 
 table {
@@ -31,13 +32,17 @@ th{
     background: #FFF;
 }
 
+tr{
+    height: 25px;
+}
+
+.local{
+    width: 50%;
+}
+
 /*Primera fila, primera celda*/
 table tr:first-child th:first-child {
     border-radius:10px 0px 0px 0px;
-}
-
-td:first-Child{
-    text-align: center
 }
  
 /*Primera fila, última celda*/

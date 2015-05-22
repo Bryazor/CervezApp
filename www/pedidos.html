@@ -9,9 +9,17 @@
         <center>
             <div id="datos">
                 <img src="imagenes/pedidos-title.png">
-                <table id="tabla">
-                    <tr><th>Prioridad</th><th>Fecha de alta</th><th>Fecha límite</th><th>Local</th><th>Estado</th></tr>
-                </table>
+                <table id="encabezado">
+                    <tr><th class="prioridad">Prio.</th><th class="alta">Alta</th><th class="local">Local</th><th class="estado">Estado</th></tr>
+                </table>                
+                <div id="scrollTabla">
+                    <table id="tabla">
+                    </table>
+                </div>
+                <table id="footer">
+                    <tr><td>...</td></tr>
+                </table>                
+                
                 <br><br>
                 <input id="boton" type="image" src="imagenes/atras.PNG" onclick="desaparecerAtras()"/>
                 <input id="boton" type="image" src="imagenes/nuevo.png" onclick="desaparecerNuevo()"/>
@@ -22,8 +30,11 @@
         var i = 0.0;
         var j = 0;
         var k = 0;
+        var altoPantalla = window.innerHeight * 0.45;
         var usuario = gup("user");
         var idPedido = "";
+        var numPedidos = "";
+        document.getElementById("scrollTabla").style.height= altoPantalla + "px"; 
         
          function iniciar(){    
             setTimeout(cargarTabla,100);
@@ -31,13 +42,14 @@
         
         function cargarTabla(){
             datosUsuario = usuario;
-            //archivoValidacion = "http://localhost/listarPedidos.php?jsoncallback=?"
-            archivoValidacion = "http://cervezapp.esy.es/listarPedidos.php?jsoncallback=?"
+           
+            //-----------------------------CargarTabla---------------------------------//
+            archivoValidacion = "http://localhost/listarPedidos.php?jsoncallback=?"
+//            archivoValidacion = "http://cervezapp.esy.es/listarPedidos.php?jsoncallback=?"
 
             $.getJSON(archivoValidacion, {usuario:datosUsuario}).done(function(respuestaServer){
                 $("#tabla").append(respuestaServer.validacion);
             })
-            
             setTimeout(aparecer,100);
         }
         
@@ -45,7 +57,7 @@
             if(i < 1){
                 i+=0.1;
                 document.getElementById("datos").style.opacity = i;
-                setTimeout(aparecer,50);
+                setTimeout(aparecer,25);
             }
         }
         
@@ -57,7 +69,7 @@
             if(i > 0){
                 i-=0.1;
                 document.getElementById("datos").style.opacity = i;
-                setTimeout(desaparecerNuevo,50);
+                setTimeout(desaparecerNuevo,25);
             } else {
                 irA("nuevoPedido.html?user="+usuario);
             }
@@ -67,7 +79,7 @@
             if(i > 0){
                 i-=0.1;
                 document.getElementById("datos").style.opacity = i;
-                setTimeout(desaparecerDetralles,50);
+                setTimeout(desaparecerDetralles,25);
             } else {
                 irA("detallesPedido.html?idPedido="+idPedido+"&user="+usuario);
             }
@@ -88,7 +100,7 @@
             if(i > 0){
                 i-=0.1;
                 document.getElementById("datos").style.opacity = i;
-                setTimeout(desaparecerAtras,50);
+                setTimeout(desaparecerAtras,25);
             } else {
             j = -window.innerHeight + 280;
             k = window.innerHeight - 280; 
@@ -109,7 +121,7 @@
         
         function verDetalles(event){
             idPedido = event.target.parentNode.getAttribute("id");
-            setTimeout(desaparecerDetralles,50);
+            setTimeout(desaparecerDetralles,25);
             
         }
     </script>

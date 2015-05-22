@@ -1,35 +1,72 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title id="titulo"> Nuevo Pedidos</title>
-        <link rel="stylesheet" type="text/css" href="css/nuevoPedido.css"/>
+        <title id="titulo">Nuevo Pedidos</title>
+        <link rel="stylesheet" type="text/css" href="css/detallesPedidos.css"/>
         <script src="js/jquery-1.11.3.min.js"></script> 
     </head>
     <body id="fondo" onload="iniciar()">
         <center>
             <div id="datos">
                 <img src="imagenes/nuevo-title.png">
-                <table id="tabla">
-                    <tr><th rowspan="2">Producto</th><th>Cantidad</th></tr>
-                </table>
+                <div id="detalles">
+                    <b>Prioridad:</b>
+                    <select id="prioridad">                    
+                    </select>
+                    <b>Estado:</b>
+                    <input type="text" id="estado" name="estado" readonly><br><br>
+                    <b>Fecha límite:</b>
+                    <input type="date" id="fechaLimite" name="fechaLimite"><br><br>
+                    <b>Local:</b>
+                    <select id="local">                    
+                    </select>
+                    <table id="tabla">
+                        <tr><th>Producto</th><th>Cantidad</th></tr>
+                    </table><br><br>
+                    <b>Producto:</b>
+                    <select id="producto">
+                    </select>
+                    <b>Cantidad:</b>
+                    <input type="number" id="cantidad" min="1"><br><br>                    
+                    <input id="botonTablaMas" type="image" src="imagenes/nuevo.png" onclick="anadir()"/>
+                </div><br>
+                <input id="boton" type="image" src="imagenes/atras.PNG" onclick="desaparecerAtras()"/>
+                <input id="boton" type="image" src="imagenes/guardar.PNG" onclick="desaparecerGuardar()"/>
             </div>
         </center>
     </body>
     <script>
         var i = 0.0;
         var usuario = gup("user");
+        var prioridad = "";
+        var fechaLimite = "";
+        var local = "";
         
-         function iniciar(){    
-            setTimeout(cargarTabla,100);
-         }
+        function iniciar(){
+            //confirm("pregunta");
+            //prompt("preugunta", "promp");;
+            setTimeout(cargarCombos,100);
+        }
         
-        function cargarTabla(){
-            datosUsuario = usuario;
-            archivoValidacion = "http://cervezapp.esy.es/listarProductos.php?jsoncallback=?"
-
-            $.getJSON(archivoValidacion, {usuario:datosUsuario}).done(function(respuestaServer){
-                $("#tabla").append(respuestaServer.validacion);
-            })
+        function cargarCombos(){
+            //-----------------------------PRIORIDAD---------------------------------//
+            //archivoValidacion = "http://localhost/cargarPrioridades.php?jsoncallback=?"
+            $.getJSON("http://localhost/cargarPrioridadesNuevo.php?jsoncallback=?").done(function(respuestaServer){
+                $("#prioridad").append(respuestaServer.validacion);
+            });
+            
+            //-----------------------------LOCAL---------------------------------//
+            //archivoValidacion = "http://localhost/cargarPrioridades.php?jsoncallback=?"
+            $.getJSON("http://localhost/cargarLocalesNuevo.php?jsoncallback=?", {usuario:usuario}).done(function(respuestaServer){
+                $("#local").append(respuestaServer.validacion);
+            });
+            
+            //-----------------------------PRODUCTOS---------------------------------//
+            //archivoValidacion = "http://localhost/cargarPrioridades.php?jsoncallback=?"
+            $.getJSON("http://localhost/cargarProductos.php?jsoncallback=?", {usuario:usuario}).done(function(respuestaServer){
+                $("#producto").append(respuestaServer.validacion);
+            });
+            
             setTimeout(aparecer,100);
         }
         
@@ -37,23 +74,109 @@
             if(i < 1){
                 i+=0.1;
                 document.getElementById("datos").style.opacity = i;
-                setTimeout(aparecer,50);
+                setTimeout(aparecer,25);
             }
         }
         
+        function isNumberValid(n) {
+            return !isNaN(parseFloat(n)) && isFinite(n) && n>0;
+        }
+        
+        function anadir(){            
+            try {
+                var producto = document.getElementById("producto").value;
+                var  idProducto = producto;
+                
+                var cantidad = document.getElementById("cantidad").value;
+                if(isNumberValid(cantidad)){
+                    var td = document.getElementById(producto).parentNode;
+                    var tr = td.parentNode;
+                    var index = tr.rowIndex;
+                    alert("El producto seleccionado ya esta en la lista");
+                    document.getElementById("cantidad").value = "";
+                } else{
+                    alert("Debe introducir una cantidad valida");
+                    document.getElementById("cantidad").value = "";
+                }                
+            }
+            catch(err) {
+                $.getJSON("http://localhost/nombreProducto.php?jsoncallback=?", {producto:producto}).done(function(respuestaServer){
+                    producto = respuestaServer.validacion;
+                    $("#tabla").append("<tr><td><input id="+idProducto+" class= \"eliminarButton\" type=\"image\" src=\"imagenes/eliminar.PNG\" onclick=\"eliminar("+idProducto+")\"/>"+producto+"</td><td>"+cantidad+"</td></tr>");           
+                document.getElementById("cantidad").value = "";
+                });
+            }
+            
+        }
+        
+        function eliminar(idProducto){
+            var td = document.getElementById(idProducto).parentNode;
+            var tr = td.parentNode;
+            var index = tr.rowIndex;
+            document.getElementById("tabla").deleteRow(index);
+        }
+
+        function irA(url){
+            document.location.href=url;
+        }
+        
+        function desaparecerAtras(){
+            if(i > 0){
+                i-=0.1;
+                document.getElementById("datos").style.opacity = i;
+                setTimeout(desaparecerAtras,25);
+            } else {
+                irA("pedidos.html?user="+usuario);
+            }
+        }
+        
+        function desaparecerGuardar(){
+            prioridad = document.getElementById("prioridad").value;               
+            fechaLimite = formatearFechaParaInsertar(document.getElementById("fechaLimite").value); 
+            local = document.getElementById("local").value;
+            fechaLimite
+            var hoy = new Date();
+
+            if((Date.parse(hoy)) > (Date.parse(fechaLimite))){                
+                alert("La fecha inicial no puede ser mayor que la fecha final");
+            } else {
+                $.getJSON("http://localhost/insertarNuevoPedido.php", {prioridad:prioridad,fechaLimite:fechaLimite,local:local})
+                
+                setTimeout(desaparecerAtras, 100);
+            }         
+        }
+        
+        function formatearFecha(fecha){
+            var array = fecha.split("/");
+            var resultado = "";
+            var i = 0;
+            for (i = array.length - 1  ; i > 0 ; i--){
+                resultado += array[i] + "-";
+            }
+            resultado += array[i];
+            return resultado;        
+        }
+
+        function formatearFechaParaInsertar(fecha){
+            var array = fecha.split("/");
+            var resultado = "";
+            var i = 0;
+            for (i = array.length - 1  ; i > 0 ; i--){
+                resultado += array[i] + "/";
+            }
+            resultado += array[i];
+            return resultado;        
+        }
+                        
         function gup( name ){
             var regexS = "[\\?&]"+name+"=([^&#]*)";
             var regex = new RegExp ( regexS );
             var tmpURL = window.location.href;
             var results = regex.exec( tmpURL );
             if( results == null )
-                return"";
+                return "";
             else
                 return results[1];
-        }
-        
-        function verDetalles(event){
-            alert(event.target.parentNode.getAttribute("id"))
         }
     </script>
 </html>
