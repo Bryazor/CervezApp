@@ -10,12 +10,15 @@
             <div id="datos">
                 <img src="imagenes/tickets-title.png">
                 <table id="encabezado">
-                    <tr><th>Prio.</th><th>Alta</th><th class="local">Local</th><th>Estado</th></tr>
+                    <tr><th class="prioridad">Prio.</th><th class="alta">Alta</th><th class="local">Local</th><th class="estado">Estado</th></tr>
                 </table>                
                 <div id="scrollTabla">
                     <table id="tabla">
                     </table>
                 </div>
+                <table id="footer">
+                    <tr><td>...</td></tr>
+                </table>
                 <br><br>
                 <input id="boton" type="image" src="imagenes/atras.PNG" onclick="desaparecerAtras()"/>
                 <input id="boton" type="image" src="imagenes/nuevo.png" onclick="desaparecerNuevo()"/>
@@ -23,11 +26,18 @@
         </center>
     </body>
     <script>
+//        var ruta = "localhost"; 
+        var ruta = "cervezapp.esy.es"; 
         var i = 0.0;
         var j = 0;
         var k = 0;
         var usuario = gup("user");
         var idTicket = "";
+        var altoPantalla = window.innerHeight * 0.35;
+        var datos = document.getElementById("datos");
+        var fondo = document.getElementById("fondo");
+        document.getElementById("scrollTabla").style.height = altoPantalla + "px"; 
+
         
         function iniciar(){  
             setTimeout(cargarTabla,100);
@@ -35,11 +45,10 @@
         
         function cargarTabla(){
             datosUsuario = usuario;
-//            listarTickets = "http://localhost/listarTickets.php?jsoncallback=?"
-            listarTickets = "http://cervezapp.esy.es/listarTickets.php?jsoncallback=?"
+            listarTickets = "http://" + ruta + "/listarTickets.php?jsoncallback=?"
 
             $.getJSON(listarTickets, {usuario:datosUsuario}).done(function(respuestaServer){
-                $("#tabla").append(respuestaServer.validacion);
+                document.getElementById("tabla").innerHTML = respuestaServer.validacion;
             })
             
             setTimeout(aparecer,100);
@@ -48,7 +57,7 @@
         function aparecer(){
             if(i < 1){
                 i+=0.1;
-                document.getElementById("datos").style.opacity = i;
+                datos.style.opacity = i;
                 setTimeout(aparecer,25);
             }
         }
@@ -60,7 +69,7 @@
         function desaparecerNuevo(){
             if(i > 0){
                 i-=0.1;
-                document.getElementById("datos").style.opacity = i;
+                datos.style.opacity = i;
                 setTimeout(desaparecerNuevo,25);
             } else {
                 irA("nuevoTicket.html?user="+usuario);
@@ -70,7 +79,7 @@
         function desaparecerDetralles(){
             if(i > 0){
                 i-=0.1;
-                document.getElementById("datos").style.opacity = i;
+                datos.style.opacity = i;
                 setTimeout(desaparecerDetralles,25);
             } else {
                 irA("detallesTicket.html?idTicket="+idTicket+"&user="+usuario);
@@ -80,7 +89,7 @@
         function vaciar(){
             if (j < 0){
                 var t = j+k;
-                document.getElementById("fondo").style.backgroundPositionY = t + "px"
+                fondo.style.backgroundPositionY = t + "px"
                 j+=2.5;
                 setTimeout(vaciar, 1);
             } else {
@@ -91,7 +100,7 @@
         function desaparecerAtras(){
             if(i > 0){
                 i-=0.1;
-                document.getElementById("datos").style.opacity = i;
+                datos.style.opacity = i;
                 setTimeout(desaparecerAtras,25);
             } else {
             j = -window.innerHeight + 280;

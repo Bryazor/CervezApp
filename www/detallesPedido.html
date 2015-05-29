@@ -19,14 +19,21 @@
                     <input type="text" id="estado" name="estado" readonly><br><br>
                     <b>Fecha de Alta:</b>
                     <input type="date" id="fechaAlta" name="fechaAlta" readonly><br><br>
-                    <b>Fecha límite:</b>
+                    <b>Fecha l&iacute;mite:</b>
                     <input type="date" id="fechaLimite" name="fechaLimite"><br><br>
                     <b>Local:</b>
                     <select id="local">                    
                     </select>
-                    <table id="tabla">
-                        <tr><th>Producto</th><th>Cantidad</th></tr>
-                    </table><br><br>
+                    <table id="encabezado">
+                    <tr><th class="producto">Producto</th><th class="cantidad">Cantidad</th></tr>
+                    </table>                
+                    <div id="scrollTabla">
+                        <table id="tabla">
+                        </table>
+                    </div>
+                    <table id="footer">
+                        <tr><td>...</td></tr>
+                    </table><br>
                     <b>Producto:</b>
                     <select id="producto">
                     </select>
@@ -35,10 +42,13 @@
                     <input id="botonTablaMas" type="image" src="imagenes/nuevo.png" onclick="anadir()"/>
                 </div>
                 <input id="boton" type="image" src="imagenes/atras.PNG" onclick="desaparecerAtras()"/>
+                    <input id="boton" type="image" src="imagenes/guardar.png" onclick="guardarCambios()"/>
             </div>
         </center>
     </body>
     <script>
+//        var ruta = "localhost"; 
+        var ruta = "cervezapp.esy.es"; 
         var i = 0.0;
         var usuario = gup("user");
         var idPedido = gup("idPedido");
@@ -47,6 +57,9 @@
         var fechaLimite = "";
         var local = "";
         var estado = "";
+        var datos = document.getElementById("datos");
+        var altoPantalla = window.innerHeight * 0.15;
+        document.getElementById("scrollTabla").style.height = altoPantalla + "px"; 
         
         function iniciar(){
             setTimeout(cargarDatos,100);
@@ -57,13 +70,13 @@
             document.getElementById("id").value = idPedido;
             
             //-----------------------------CargarDetalles---------------------------------//
-//            cargarDetallesPedido = "http://localhost/cargarDetallesPedido.php?jsoncallback=?"
-            cargarDetallesPedido = "http://cervezapp.esy.es/detallesPedido.php?jsoncallback=?"
+            cargarDetallesPedido = "http://" + ruta + "/cargarDetallesPedido.php?jsoncallback=?"
+//            cargarDetallesPedido = "http://cervezapp.esy.es/detallesPedido.php?jsoncallback=?"
 
             $.getJSON(cargarDetallesPedido, {idPedido:idPedido}).done(function(respuestaServer){          
                       
                 prioridad = respuestaServer.prioridad;
-                fechaAlta = respuestaServer.fechaAlta;           
+                fechaAlta = respuestaServer.fechaAlta;
                 document.getElementById("fechaAlta").value = formatearFecha(fechaAlta);
                 fechaLimite = respuestaServer.fechaLimite;
                 document.getElementById("fechaLimite").value = formatearFecha(fechaLimite);
@@ -77,24 +90,21 @@
         
         function cargarCombos(){
             //-----------------------------PRIORIDAD---------------------------------//
-            //cargarPrioridades = "http://localhost/cargarPrioridades.php?jsoncallback=?"
-            cargarPrioridades = "http://cervezapp.esy.es/cargarPrioridades.php?jsoncallback=?"
+            cargarPrioridades = "http://" + ruta + "/cargarPrioridades.php?jsoncallback=?"
             $.getJSON(cargarPrioridades, {prioridad:prioridad}).done(function(respuestaServer){
-                $("#prioridad").append(respuestaServer.validacion);
+                document.getElementById("prioridad").innerHTML = respuestaServer.validacion;
             });
             
             //-----------------------------LOCAL---------------------------------//
-            //cargarLocales = "http://localhost/cargarLocales.php?jsoncallback=?"
-            cargarLocales = "http://cervezapp.esy.es/cargarLocales.php?jsoncallback=?"
+            cargarLocales = "http://" + ruta + "/cargarLocales.php?jsoncallback=?"
             $.getJSON(cargarLocales, {usuario:usuario, local:local}).done(function(respuestaServer){
-                $("#local").append(respuestaServer.validacion);
+                document.getElementById("local").innerHTML = respuestaServer.validacion;
             });
             
             //-----------------------------PRODUCTOS---------------------------------//
-            //cargarProductos = "http://localhost/cargarProductos.php?jsoncallback=?"
-            cargarProductos = "http://cervezapp.esy.es/cargarProductos.php?jsoncallback=?"
+            cargarProductos = "http://" + ruta + "/cargarProductos.php?jsoncallback=?"
             $.getJSON(cargarProductos, {usuario:usuario}).done(function(respuestaServer){
-                $("#producto").append(respuestaServer.validacion);
+                document.getElementById("producto").innerHTML = respuestaServer.validacion;
             });
             
             setTimeout(cargarTabla,100);
@@ -102,11 +112,10 @@
         
         function cargarTabla(){
             //-----------------------------CargarTabla---------------------------------//
-            //detallesPedidos = "http://localhost/detallesPedidos.php?jsoncallback=?"
-            detallesPedidos = "http://cervezapp.esy.es/detallesPedido.php?jsoncallback=?"
+            detallesPedidos = "http://" + ruta + "/detallesPedidos.php?jsoncallback=?"
 
             $.getJSON(detallesPedidos, {idPedido:idPedido}).done(function(respuestaServer){
-                $("#tabla").append(respuestaServer.validacion);
+                document.getElementById("tabla").innerHTML = respuestaServer.validacion;
             });
             
             setTimeout(aparecer,100);
@@ -115,7 +124,7 @@
         function aparecer(){
             if(i < 1){
                 i+=0.1;
-                document.getElementById("datos").style.opacity = i;
+                datos.style.opacity = i;
                 setTimeout(aparecer,25);
             }
         }
@@ -123,7 +132,7 @@
         function isNumberValid(n) {
             return !isNaN(parseFloat(n)) && isFinite(n) && n>0;
         }
-        
+
         function anadir(){            
             try {
                 var producto = document.getElementById("producto").value;
@@ -142,16 +151,42 @@
                 }                
             }
             catch(err) {
-                //nombreProducto = "http://localhost/nombreProducto.php?jsoncallback=?"
-                nombreProducto = "http://cervezapp.esy.es/nombreProducto.php?jsoncallback=?"
+                nombreProducto = "http://" + ruta + "/nombreProducto.php?jsoncallback=?"
 
                 $.getJSON(nombreProducto, {producto:producto}).done(function(respuestaServer){
-                    producto = respuestaServer.validacion;
-                    $("#tabla").append("<tr><td><input id="+idProducto+" class= \"eliminarButton\" type=\"image\" src=\"imagenes/eliminar.PNG\" onclick=\"eliminar("+idProducto+")\"/>"+producto+"</td><td>"+cantidad+"</td></tr>");           
-                document.getElementById("cantidad").value = "";
+                    producto = respuestaServer.validacion;                    
+                    
+                    var table = document.getElementById("tabla");
+                    var row = table.insertRow(table.rows.length);
+                    
+                    var cellProducto = row.insertCell(0);
+                    var cellCantidad = row.insertCell(1);
+                    
+                    cellProducto.setAttribute("id", idProducto);                   
+                    cellProducto.setAttribute("class", "producto");                   
+                    cellProducto.innerHTML = "<input id="+idProducto+" class= \"eliminarButton\" type=\"image\" src=\"imagenes/eliminar.PNG\" onclick=\"eliminar("+idProducto+")\"/>" + producto;
+                    
+                    cellCantidad.setAttribute("class", "cantidad");
+                    cellCantidad.setAttribute("onclick", "cambiarCantidad("+idProducto+")");
+                    cellCantidad.innerHTML = cantidad;
+                    
+                    document.getElementById("cantidad").value = "";
                 });
-            }
+            }            
+        }
+        
+        function cambiarCantidad(idProducto){
+            var td = document.getElementById(idProducto);
+            var tr = td.parentNode;
+            var nuevaCantidad = parseInt(prompt("Introduzca la nueva cantidad"));
             
+            if(isNumberValid(nuevaCantidad)){
+                
+                    tr.cells[1].innerHTML = nuevaCantidad;
+                
+            } else {
+                alert("Número no valido");
+            }
         }
         
         function eliminar(idProducto){
@@ -168,10 +203,43 @@
         function desaparecerAtras(){
             if(i > 0){
                 i-=0.1;
-                document.getElementById("datos").style.opacity = i;
+                datos.style.opacity = i;
                 setTimeout(desaparecerAtras,25);
             } else {
                 irA("pedidos.html?user="+usuario);
+            }
+        }
+        
+        function guardarCambios(){
+            prioridad = document.getElementById("prioridad").value;               
+            fechaLimite = document.getElementById("fechaLimite").value;
+            local = document.getElementById("local").value;
+            estado = document.getElementById("estado").value;
+            
+            var table = document.getElementById("tabla");
+            
+            var numFilas = table.rows.length;
+            var productos = "";
+            
+            for (i = 0; i < numFilas; i++) {
+                productos += table.rows[i].cells[0].getAttribute('id') + "," + table.rows[i].cells[1].innerHTML + "/";
+            }  
+            if(estado != "Estado1"){
+                alert("El pedido ya se esta tramitando, no se puede modificar");
+            }else if(fechaLimite == ""){
+                alert("Debe espezificar una fecha");
+            }else if(Date.parse(new Date()) > Date.parse(fechaLimite)){                
+                alert("La fecha limite debe ser al menos un dia mas que la actual");
+            }else{
+                var guardar = confirm("¿Desea guardar los cambios realizados en este pedido?");
+                if (guardar){
+                    guardarCambiosPedido = "http://" + ruta + "/guardarCambiosPedido.php?jsoncallback=?";
+                    $.getJSON(guardarCambiosPedido, {idPedido:idPedido,prioridad:prioridad,fechaLimite:fechaLimite,local:local,productos:productos})
+                    
+                    logEditarPedido = "http://" + ruta + "/logEditarPedido.php?jsoncallback=?";
+                    $.getJSON(logEditarPedido, {idPedido:idPedido})
+                    setTimeout(desaparecerAtras,200);
+                }
             }
         }
         

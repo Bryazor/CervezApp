@@ -10,7 +10,7 @@
             <div id="datos">
                 <img id="titulo" src="imagenes/detalles-title.PNG">
                 <div id="form">
-                    <b>Descripcion:</b>
+                    <b>Descripci&oacute;n:</b>
                     <br>
                     <br>
                     <textarea id="descripcion" rows="10"  wrap="soft"></textarea>
@@ -33,7 +33,7 @@
                     <input id="fechaAlta" type="date" name="fechaAlta" readonly>
                     <br>
                     <br>
-                    <b>Fecha límite:</b>
+                    <b>Fecha l&iacute;mite:</b>
                     <input id="fechaLimite" type="date" name="fechaLimite">
                     <br><br>
                     <input id="boton" type="image" src="imagenes/cancelar.png" onclick="desaparecerAtras()"/>
@@ -43,6 +43,8 @@
         </center>
     </body>
     <script>
+//        var ruta = "localhost"; 
+        var ruta = "cervezapp.esy.es";
         var i = 0.0;
         var usuario = gup("user");
         var idTicket = gup("idTicket");
@@ -64,8 +66,7 @@
             document.getElementById("id").value = idTicket;
             
             //-----------------------------CargarDetalles---------------------------------//
-//            cargarDetallesTicket = "http://localhost/cargarDetallesTicket.php?jsoncallback=?"
-            cargarDetallesTicket = "http://cervezapp.esy.es/cargarDetallesTicket.php?jsoncallback=?"
+            cargarDetallesTicket = "http://" + ruta + "/cargarDetallesTicket.php?jsoncallback=?"
 
             $.getJSON(cargarDetallesTicket, {idTicket:idTicket}).done(function(respuestaServer){
                 prioridad = respuestaServer.prioridad;
@@ -87,24 +88,21 @@
         function cargarCombos(){
 
             //-----------------------------PRIORIDAD---------------------------------//
-            //cargarPrioridadesNuevo = "http://localhost/cargarPrioridades.php?jsoncallback=?"
-            cargarPrioridadesNuevo = "http://cervezapp.esy.es/cargarPrioridades.php?jsoncallback=?"
-            $.getJSON(cargarPrioridadesNuevo).done(function(respuestaServer){
-                $("#prioridad").append(respuestaServer.validacion);
+            cargarPrioridades = "http://" + ruta + "/cargarPrioridades.php?jsoncallback=?"
+            $.getJSON(cargarPrioridades, {prioridad:prioridad}).done(function(respuestaServer){
+                document.getElementById("prioridad").innerHTML = respuestaServer.validacion;
             });
             
             //-----------------------------LOCAL---------------------------------//
-            //cargarLocalesNuevo = "http://localhost/cargarLocalesNuevo.php?jsoncallback=?"
-            cargarLocalesNuevo = "http://cervezapp.esy.es/cargarLocalesNuevo.php?jsoncallback=?"
-            $.getJSON(cargarLocalesNuevo, {usuario:usuario, local:local}).done(function(respuestaServer){
-                $("#local").append(respuestaServer.validacion);
+            cargarLocales = "http://" + ruta + "/cargarLocales.php?jsoncallback=?"
+            $.getJSON(cargarLocales, {usuario:usuario, local:local}).done(function(respuestaServer){
+                document.getElementById("local").innerHTML = respuestaServer.validacion;
             });
             
             //-----------------------------TIPOTICKETS---------------------------------//
-            //cargarTipoTicketNuevo = "http://localhost/cargarTipoTicketNuevo.php?jsoncallback=?"
-            cargarTipoTicketNuevo = "http://cervezapp.esy.es/cargarTipoTicketNuevo.php?jsoncallback=?"
+            cargarTipoTicketNuevo = "http://" + ruta + "/cargarTipoTicketNuevo.php?jsoncallback=?"
             $.getJSON(cargarTipoTicketNuevo, {tipoTicket:tipoTicket}).done(function(respuestaServer){
-                $("#tipoTicket").append(respuestaServer.tipoTicket);
+                document.getElementById("tipoTicket").innerHTML = respuestaServer.tipoTicket;
             });
             
             setTimeout(aparecer,100);
@@ -134,14 +132,27 @@
         
         function guardarCambios(){
             prioridad = document.getElementById("prioridad").value;               
-            fechaLimite = formatearFechaParaInsertar(document.getElementById("fechaLimite").value);                
+            fechaLimite = document.getElementById("fechaLimite").value;                
             descripcion = document.getElementById("descripcion").value;
             local = document.getElementById("local").value;
             tipoTicket = document.getElementById("tipoTicket").value;
-            
-//            guardarCambiosTicket = "http://localhost/guardarCambiosTicket.php";
-            guardarCambiosTicket = "http://cervezapp.esy.es/guardarCambiosTicket.php";
-            $.getJSON(guardarCambiosTicket, {idTicket:idTicket,prioridad:prioridad,fechaLimite:fechaLimite,descripcion:descripcion,local:local,tipoTicket:tipoTicket})
+            if(fechaLimite == ""){
+                alert("Debe espezificar una fecha");
+            }else if(Date.parse(new Date()) > Date.parse(fechaLimite)){                
+                alert("La fecha limite debe ser al menos un dia mas que la actual");
+            }else{
+                var guardar = confirm("¿Desea guardar los cambios realizados en este ticket?");
+                if (guardar){
+                    guardarCambiosTicket = "http://" + ruta + "/guardarCambiosTicket.php";
+                    $.getJSON(guardarCambiosTicket, {idTicket:idTicket,prioridad:prioridad,fechaLimite:fechaLimite,descripcion:descripcion,local:local,tipoTicket:tipoTicket})
+                    
+                    
+                    
+                    logEditarTicket = "http://" + ruta + "/logEditarTicket.php";
+                    $.getJSON(logEditarTicket, {idTicket:idTicket})
+                    setTimeout(desaparecerAtras,200);
+                }
+            }
         }
         
         function formatearFecha(fecha){
@@ -150,17 +161,6 @@
             var i = 0;
             for (i = array.length - 1  ; i > 0 ; i--){
                 resultado += array[i] + "-";
-            }
-            resultado += array[i];
-            return resultado;        
-        }
-        
-        function formatearFechaParaInsertar(fecha){
-            var array = fecha.split("/");
-            var resultado = "";
-            var i = 0;
-            for (i = array.length - 1  ; i > 0 ; i--){
-                resultado += array[i] + "/";
             }
             resultado += array[i];
             return resultado;        

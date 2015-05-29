@@ -11,7 +11,7 @@
 #id{
     text-align: center;
     margin-right: 3%;
-    width: 5%;   
+    width: 8%;   
 }
 
 #prioridad{
@@ -21,7 +21,7 @@
 
 #estado{
     text-align: center;
-    width: 30%;
+    width: 27%;
 }
 
 #local{
@@ -32,12 +32,36 @@
     opacity: 0.0;
 }
 
-#tabla{
+#encabezado {
+    margin-top: 1%;
+    width: 80%;
     text-align: center;
-    margin-top: 5%;
-    width: 90%;
+    font-family: arial;
+    font-size: 12px;
+    
 }
 
+#footer {
+    width: 80%;
+    text-align: center;
+    font-family: arial;
+    font-size: 12px;
+    
+}
+
+#scrollTabla {
+    background: #FFF;
+    width: 78.9%;
+    overflow-y: scroll;
+}
+
+#tabla {
+    width: 100%;
+    text-align: center;
+    font-family: arial;
+    font-size: 12px;
+}
+ 
 #producto{
     text-align: center;
     width: 30%;
@@ -60,16 +84,20 @@
 }
 
 .eliminarButton {  
-    width: 5%;
+    width: 10px;
     margin-top: 2%;
     margin-left: 2%;
     margin-right: 10%;
 }
 
+.cantidad{
+    width: 20%;
+}
+
 table td:first-child {
     text-align: left;
 }
-
+ 
 td, th{
     padding:3px;
 }
@@ -79,16 +107,12 @@ th{
 }
 
 tr{
-    height: 30px;
+    height: 25px;
 }
 
 /*Primera fila, primera celda*/
 table tr:first-child th:first-child {
     border-radius:10px 0px 0px 0px;
-}
-
-th:last-Child{
-    width:15%;
 }
  
 /*Primera fila, última celda*/
@@ -97,14 +121,12 @@ table tr:first-child th:last-child {
 }
  
 /*Última fila, primera celda*/
-table tr:last-child td:first-child {
-    border-radius:0px 0px 0px 10px;
+#footer td {
+    text-align: center;
+    background: #FFF;
+    border-radius:0px 0px 10px 10px;
 }
  
-/*Última fila, última celda*/
-table tr:last-child td:last-child {
-    border-radius:0px 0px 10px 0px;
-}
 
 table tr:nth-child(2n) {
     background: #f0c002;

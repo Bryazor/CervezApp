@@ -16,6 +16,20 @@
     
 }
 
+#scrollTabla {
+    background: #FFF;
+    width: 78.9%;
+    overflow-y: scroll;
+}
+
+#tabla {
+    border: 0px;
+    width: 100%;
+    text-align: center;
+    font-family: arial;
+    font-size: 12px;
+}
+ 
 #footer {
     width: 80%;
     text-align: center;
@@ -24,24 +38,12 @@
     
 }
 
-#scrollTabla {
-    width: 80%;
-    overflow-y: scroll;
-}
-
 #boton {
     margin-left: 3%;       
     margin-right: 3%; 
     width: 20%
 }
 
-#tabla {
-    width: 100%;
-    text-align: center;
-    font-family: arial;
-    font-size: 12px;
-}
- 
 td, th{
     padding:3px;
 }
@@ -55,7 +57,7 @@ tr{
 }
 
 .prioridad{
-    width: 10%;
+    width: 15%;
 }
 
 .alta{

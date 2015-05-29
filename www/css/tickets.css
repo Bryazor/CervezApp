@@ -7,10 +7,35 @@
     opacity: 0.0;
 }
 
-#tabla{
+#encabezado {
     margin-top: 17%;
-    width: 90%;
+    width: 80%;
     text-align: center;
+    font-family: arial;
+    font-size: 12px;
+    
+}
+
+#scrollTabla {
+    background: #FFF;
+    width: 78.9%;
+    overflow-y: scroll;
+}
+
+#tabla {
+    border: 0px;
+    width: 100%;
+    text-align: center;
+    font-family: arial;
+    font-size: 12px;
+}
+ 
+#footer {
+    width: 80%;
+    text-align: center;
+    font-family: arial;
+    font-size: 12px;
+    
 }
 
 #boton {
@@ -19,11 +44,6 @@
     width: 20%
 }
 
-table {
-    font-family: arial;
-    font-size: 12px;
-}
- 
 td, th{
     padding:3px;
 }
@@ -36,8 +56,20 @@ tr{
     height: 25px;
 }
 
+.prioridad{
+    width: 15%;
+}
+
+.alta{
+    width: 20%;
+}
+
 .local{
     width: 50%;
+}
+
+.estado{
+    width: 300%;
 }
 
 /*Primera fila, primera celda*/
@@ -51,14 +83,11 @@ table tr:first-child th:last-child {
 }
  
 /*Última fila, primera celda*/
-table tr:last-child td:first-child {
-    border-radius:0px 0px 0px 10px;
+#footer td {
+    background: #FFF;
+    border-radius:0px 0px 10px 10px;
 }
  
-/*Última fila, última celda*/
-table tr:last-child td:last-child {
-    border-radius:0px 0px 10px 0px;
-}
 
 table tr:nth-child(2n) {
     background: #f0c002;

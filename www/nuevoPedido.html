@@ -15,14 +15,21 @@
                     </select>
                     <b>Estado:</b>
                     <input type="text" id="estado" name="estado" readonly><br><br>
-                    <b>Fecha límite:</b>
+                    <b>Fecha l&iacute;mite:</b>
                     <input type="date" id="fechaLimite" name="fechaLimite"><br><br>
                     <b>Local:</b>
                     <select id="local">                    
                     </select>
-                    <table id="tabla">
-                        <tr><th>Producto</th><th>Cantidad</th></tr>
-                    </table><br><br>
+                    <table id="encabezado">
+                    <tr><th class="producto">Producto</th><th class="cantidad">Cantidad</th></tr>
+                    </table>                
+                    <div id="scrollTabla">
+                        <table id="tabla">
+                        </table>
+                    </div>
+                    <table id="footer">
+                        <tr><td>...</td></tr>
+                    </table><br>
                     <b>Producto:</b>
                     <select id="producto">
                     </select>
@@ -36,38 +43,40 @@
         </center>
     </body>
     <script>
+//        var ruta = "localhost"; 
+        var ruta = "cervezapp.esy.es"; 
         var i = 0.0;
         var usuario = gup("user");
+        var idPedido = "";
         var prioridad = "";
         var fechaLimite = "";
         var local = "";
+        var datos = document.getElementById("datos");
+        var altoPantalla = window.innerHeight * 0.18;
+        document.getElementById("scrollTabla").style.height = altoPantalla + "px"; 
+
         
         function iniciar(){
-            //confirm("pregunta");
-            //prompt("preugunta", "promp");;
             setTimeout(cargarCombos,100);
         }
         
         function cargarCombos(){
             //-----------------------------PRIORIDAD---------------------------------//
-            //cargarPrioridades = "http://localhost/cargarPrioridades.php?jsoncallback=?"
-            cargarPrioridades = "http://cervezapp.esy.es/cargarPrioridades.php?jsoncallback=?"
-            $.getJSON(cargarPrioridades).done(function(respuestaServer){
-                $("#prioridad").append(respuestaServer.validacion);
+            cargarPrioridadesNuevo = "http://" + ruta + "/cargarPrioridadesNuevo.php?jsoncallback=?"
+            $.getJSON(cargarPrioridadesNuevo).done(function(respuestaServer){
+                document.getElementById("prioridad").innerHTML = respuestaServer.validacion;
             });
             
             //-----------------------------LOCAL---------------------------------//
-            //cargarLocalesNuevo = "http://localhost/cargarLocalesNuevo.php?jsoncallback=?"
-            cargarLocalesNuevo = "http://cervezapp.esy.es/cargarLocalesNuevo.php?jsoncallback=?"
+            cargarLocalesNuevo = "http://" + ruta + "/cargarLocalesNuevo.php?jsoncallback=?"
             $.getJSON(cargarLocalesNuevo, {usuario:usuario}).done(function(respuestaServer){
-                $("#local").append(respuestaServer.validacion);
+                document.getElementById("local").innerHTML = respuestaServer.validacion;
             });
             
             //-----------------------------PRODUCTOS---------------------------------//
-            //cargarProductos = "http://localhost/cargarProductos.php?jsoncallback=?"
-            cargarProductos = "http://cervezapp.esy.es/cargarProductos.php?jsoncallback=?"
-            $.getJSON(cargarProductos, {usuario:usuario}).done(function(respuestaServer){
-                $("#producto").append(respuestaServer.validacion);
+            cargarProductos = "http://" + ruta + "/cargarProductos.php?jsoncallback=?"
+            $.getJSON(cargarProductos).done(function(respuestaServer){
+                document.getElementById("producto").innerHTML = respuestaServer.validacion;
             });
             
             setTimeout(aparecer,100);
@@ -76,7 +85,7 @@
         function aparecer(){
             if(i < 1){
                 i+=0.1;
-                document.getElementById("datos").style.opacity = i;
+                datos.style.opacity = i;
                 setTimeout(aparecer,25);
             }
         }
@@ -84,7 +93,7 @@
         function isNumberValid(n) {
             return !isNaN(parseFloat(n)) && isFinite(n) && n>0;
         }
-        
+
         function anadir(){            
             try {
                 var producto = document.getElementById("producto").value;
@@ -103,15 +112,42 @@
                 }                
             }
             catch(err) {
-                //nombreProducto = "http://localhost/nombreProducto.php?jsoncallback=?"
-                nombreProducto = "http://cervezapp.esy.es/nombreProducto.php?jsoncallback=?"
+                nombreProducto = "http://" + ruta + "/nombreProducto.php?jsoncallback=?"
+
                 $.getJSON(nombreProducto, {producto:producto}).done(function(respuestaServer){
-                    producto = respuestaServer.validacion;
-                    $("#tabla").append("<tr><td><input id="+idProducto+" class= \"eliminarButton\" type=\"image\" src=\"imagenes/eliminar.PNG\" onclick=\"eliminar("+idProducto+")\"/>"+producto+"</td><td>"+cantidad+"</td></tr>");           
-                document.getElementById("cantidad").value = "";
+                    producto = respuestaServer.validacion;                    
+                    
+                    var table = document.getElementById("tabla");
+                    var row = table.insertRow(table.rows.length);
+                    
+                    var cellProducto = row.insertCell(0);
+                    var cellCantidad = row.insertCell(1);
+                    
+                    cellProducto.setAttribute("id", idProducto);                   
+                    cellProducto.setAttribute("class", "producto");                   
+                    cellProducto.innerHTML = "<input id="+idProducto+" class= \"eliminarButton\" type=\"image\" src=\"imagenes/eliminar.PNG\" onclick=\"eliminar("+idProducto+")\"/>" + producto;
+                    
+                    cellCantidad.setAttribute("class", "cantidad");
+                    cellCantidad.setAttribute("onclick", "cambiarCantidad("+idProducto+")");
+                    cellCantidad.innerHTML = cantidad;
+                    
+                    document.getElementById("cantidad").value = "";
                 });
-            }
+            }            
+        }
+        
+        function cambiarCantidad(idProducto){
+            var td = document.getElementById(idProducto);
+            var tr = td.parentNode;
+            var nuevaCantidad = parseInt(prompt("Introduzca la nueva cantidad"));
             
+            if(isNumberValid(nuevaCantidad)){
+                
+                    tr.cells[1].innerHTML = nuevaCantidad;
+                
+            } else {
+                alert("Número no valido");
+            }
         }
         
         function eliminar(idProducto){
@@ -128,7 +164,7 @@
         function desaparecerAtras(){
             if(i > 0){
                 i-=0.1;
-                document.getElementById("datos").style.opacity = i;
+                datos.style.opacity = i;
                 setTimeout(desaparecerAtras,25);
             } else {
                 irA("pedidos.html?user="+usuario);
@@ -136,22 +172,40 @@
         }
         
         function desaparecerGuardar(){
-            prioridad = document.getElementById("prioridad").value;               
-            fechaLimite = formatearFechaParaInsertar(document.getElementById("fechaLimite").value); 
-            local = document.getElementById("local").value;
-            fechaLimite
-            var hoy = new Date();
+            try{
+                prioridad = document.getElementById("prioridad").value;  
+                fechaLimite = formatearFechaParaInsertar(document.getElementById("fechaLimite").value);
+                local = document.getElementById("local").value;
+                
+                var table = document.getElementById("tabla");
 
-            if((Date.parse(hoy)) > (Date.parse(fechaLimite))){                
-                alert("La fecha inicial no puede ser mayor que la fecha final");
-            } else {
+                var numFilas = table.rows.length;
+                var productos = "";
+
+                for (i = 0; i < numFilas; i++) {
+                    productos += table.rows[i].cells[0].getAttribute('id') + "," + table.rows[i].cells[1].innerHTML + "/";
+                }
                 
-//                insertarNuevoPedido = "http://localhost/insertarNuevoPedido.php";
-                insertarNuevoPedido = "http://cervezapp.esy.es/insertarNuevoPedido.php";
-                $.getJSON(insertarNuevoPedido, {prioridad:prioridad,fechaLimite:fechaLimite,local:local})
-                
-                setTimeout(desaparecerAtras, 100);
-            }         
+                if(fechaLimite == ""){
+                    alert("Debe espezificar una fecha");
+                }else if(Date.parse(new Date()) > Date.parse(fechaLimite)){                
+                    alert("La fecha limite debe ser al menos un dia mas que la actual");
+                }else{
+                    var guardar = confirm("¿Desea realizar este pedido?");
+                    if (guardar){
+                        insertarNuevoPedido = "http://" + ruta + "/insertarNuevoPedido.php";
+                        $.getJSON(insertarNuevoPedido, {prioridad:prioridad,fechaLimite:fechaLimite,local:local,usuario:usuario,productos:productos})
+                        
+                        logNuevoPedido = "http://" + ruta + "/logNuevoPedido.php";
+
+                        $.getJSON(logNuevoPedido, {usuario:usuario});
+                        
+                        setTimeout(desaparecerAtras, 200);
+                    }
+                }
+            }catch(err){
+                alert("La fecha es incorrecta");
+            }  
         }
         
         function formatearFecha(fecha){
@@ -166,14 +220,15 @@
         }
 
         function formatearFechaParaInsertar(fecha){
-            var array = fecha.split("/");
-            var resultado = "";
-            var i = 0;
-            for (i = array.length - 1  ; i > 0 ; i--){
-                resultado += array[i] + "/";
-            }
-            resultado += array[i];
-            return resultado;        
+            
+                var array = fecha.split("/");
+                var resultado = "";
+                var i = 0;
+                for (i = array.length - 1  ; i > 0 ; i--){
+                    resultado += array[i] + "/";
+                }
+                resultado += array[i];
+                return resultado;
         }
                         
         function gup( name ){
