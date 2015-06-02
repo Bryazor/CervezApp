@@ -26,7 +26,7 @@
                     </select>
                     <table id="encabezado">
                     <tr><th class="producto">Producto</th><th class="cantidad">Cantidad</th></tr>
-                    </table>                
+                    </table>
                     <div id="scrollTabla">
                         <table id="tabla">
                         </table>
@@ -42,7 +42,7 @@
                     <input id="botonTablaMas" type="image" src="imagenes/nuevo.png" onclick="anadir()"/>
                 </div>
                 <input id="boton" type="image" src="imagenes/atras.PNG" onclick="desaparecerAtras()"/>
-                    <input id="boton" type="image" src="imagenes/guardar.png" onclick="guardarCambios()"/>
+                <input id="boton" type="image" src="imagenes/guardar.png" onclick="guardarCambios()"/>
             </div>
         </center>
     </body>
@@ -57,6 +57,8 @@
         var fechaLimite = "";
         var local = "";
         var estado = "";
+        var listaAntigua = [];
+        var listaNueva = [];
         var datos = document.getElementById("datos");
         var altoPantalla = window.innerHeight * 0.15;
         document.getElementById("scrollTabla").style.height = altoPantalla + "px"; 
@@ -71,7 +73,6 @@
             
             //-----------------------------CargarDetalles---------------------------------//
             cargarDetallesPedido = "http://" + ruta + "/cargarDetallesPedido.php?jsoncallback=?"
-//            cargarDetallesPedido = "http://cervezapp.esy.es/detallesPedido.php?jsoncallback=?"
 
             $.getJSON(cargarDetallesPedido, {idPedido:idPedido}).done(function(respuestaServer){          
                       
@@ -84,7 +85,6 @@
                 estado = respuestaServer.estado;
                 document.getElementById("estado").value = estado;
             });
-            
             setTimeout(cargarCombos,100);
         }
         
@@ -115,9 +115,9 @@
             detallesPedidos = "http://" + ruta + "/detallesPedidos.php?jsoncallback=?"
 
             $.getJSON(detallesPedidos, {idPedido:idPedido}).done(function(respuestaServer){
-                document.getElementById("tabla").innerHTML = respuestaServer.validacion;
+                document.getElementById("tabla").innerHTML = respuestaServer.validacion;                
             });
-            
+                    
             setTimeout(aparecer,100);
         }
         
@@ -133,7 +133,18 @@
             return !isNaN(parseFloat(n)) && isFinite(n) && n>0;
         }
 
-        function anadir(){            
+        function anadir(){  
+            if (listaAntigua.length < 1){
+                var table = document.getElementById("tabla");
+            
+                var numFilas = table.rows.length;
+                var productos = "";
+                for (i = 0; i < numFilas; i++) {
+                    var aux = table.rows[i].cells[0].innerHTML.split(">");
+                    listaAntigua.push(aux[1] + "," + table.rows[i].cells[1].innerHTML);
+                }
+            }
+            
             try {
                 var producto = document.getElementById("producto").value;
                 var  idProducto = producto;
@@ -176,24 +187,54 @@
         }
         
         function cambiarCantidad(idProducto){
+            
+            if (listaAntigua.length < 1){
+                var table = document.getElementById("tabla");
+            
+                var numFilas = table.rows.length;
+                var productos = "";
+                for (i = 0; i < numFilas; i++) {
+                    var aux = table.rows[i].cells[0].innerHTML.split(">");
+                    listaAntigua.push(aux[1] + "," + table.rows[i].cells[1].innerHTML);
+                }
+            }
+            
             var td = document.getElementById(idProducto);
             var tr = td.parentNode;
             var nuevaCantidad = parseInt(prompt("Introduzca la nueva cantidad"));
             
             if(isNumberValid(nuevaCantidad)){
-                
-                    tr.cells[1].innerHTML = nuevaCantidad;
-                
+                    tr.cells[1].innerHTML = nuevaCantidad;                
             } else {
                 alert("Número no valido");
             }
         }
         
         function eliminar(idProducto){
-            var td = document.getElementById(idProducto).parentNode;
+            
+            if (listaAntigua.length < 1){
+                var table = document.getElementById("tabla");
+            
+                var numFilas = table.rows.length;
+                for (i = 0; i < numFilas; i++) {
+                    var aux = table.rows[i].cells[0].innerHTML.split(">");
+                    listaAntigua.push(aux[1] + "," + table.rows[i].cells[1].innerHTML);
+                }
+            }
+            
+            var td = document.getElementById(idProducto);
             var tr = td.parentNode;
-            var index = tr.rowIndex;
+            var index = tr.rowIndex;  
+            var cantidad = tr.cells[1].innerHTML;
+            
+            nombreProducto = "http://" + ruta + "/nombreProducto.php?jsoncallback=?"
+            $.getJSON(nombreProducto, {producto:idProducto}).done(function(respuestaServer){
+                
+            });
+            
             document.getElementById("tabla").deleteRow(index);
+            
+            
         }
 
         function irA(url){
@@ -223,8 +264,11 @@
             
             for (i = 0; i < numFilas; i++) {
                 productos += table.rows[i].cells[0].getAttribute('id') + "," + table.rows[i].cells[1].innerHTML + "/";
-            }  
-            if(estado != "Estado1"){
+            }
+            
+            if(numFilas == 0){
+                alert("El pedido debe tener al menos 1 producto");
+            }else if(estado != "Estado1"){
                 alert("El pedido ya se esta tramitando, no se puede modificar");
             }else if(fechaLimite == ""){
                 alert("Debe espezificar una fecha");
@@ -238,6 +282,50 @@
                     
                     logEditarPedido = "http://" + ruta + "/logEditarPedido.php?jsoncallback=?";
                     $.getJSON(logEditarPedido, {idPedido:idPedido})
+                    
+                    var table = document.getElementById("tabla");
+            
+                    var numFilas = table.rows.length;
+                    var productos = "";
+                    for (i = 0; i < numFilas; i++) {
+                        var aux = table.rows[i].cells[0].innerHTML.split(">");
+                        listaNueva.push(aux[1] + "," + table.rows[i].cells[1].innerHTML);
+                    }
+                    
+                    logProducto = "http://" + ruta + "/logProducto.php?jsoncallback=?";
+                    for (i in listaNueva){
+                        var nuevoProducto = listaNueva[i].split(",");
+                        
+                        var insertar = true;
+                        for (i in listaAntigua){
+                            var antiguoProducto = listaAntigua[i].split(",");
+                            if (nuevoProducto[0] == antiguoProducto[0]){
+                                insertar = false;
+                                if (nuevoProducto[1] != antiguoProducto[1]){
+                                    $.getJSON(logProducto, {idPedido:idPedido,descripcion:"Cantidad modificada para " + nuevoProducto[0] + " de " +  antiguoProducto[1] + " a " + nuevoProducto[1]})
+                                }
+                            }
+                        }
+                        
+                        if(insertar){
+                            $.getJSON(logProducto, {idPedido:idPedido,descripcion:"Insertadas " + nuevoProducto[1] + " unidades del producto " + nuevoProducto[0] + "."})
+                        }
+                    }
+                    
+                    for (i in listaAntigua){
+                        var antiguoProducto = listaAntigua[i].split(",");                            
+                        var borrar = true;
+                        for (i in listaNueva){
+                            var nuevoProducto = listaNueva[i].split(",");
+                            if (nuevoProducto[0] == antiguoProducto[0]){
+                                borrar = false;
+                            }                                
+                        }
+                        if(borrar){
+                            $.getJSON(logProducto, {idPedido:idPedido,descripcion:"Producto " + antiguoProducto[0] + " eliminado."})
+                        }
+                    }
+                    
                     setTimeout(desaparecerAtras,200);
                 }
             }

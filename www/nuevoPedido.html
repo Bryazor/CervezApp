@@ -51,6 +51,7 @@
         var prioridad = "";
         var fechaLimite = "";
         var local = "";
+        var listaNueva = [];
         var datos = document.getElementById("datos");
         var altoPantalla = window.innerHeight * 0.18;
         document.getElementById("scrollTabla").style.height = altoPantalla + "px"; 
@@ -186,7 +187,9 @@
                     productos += table.rows[i].cells[0].getAttribute('id') + "," + table.rows[i].cells[1].innerHTML + "/";
                 }
                 
-                if(fechaLimite == ""){
+                if(numFilas == 0){
+                alert("El pedido debe tener al menos 1 producto");
+                }else if(fechaLimite == ""){
                     alert("Debe espezificar una fecha");
                 }else if(Date.parse(new Date()) > Date.parse(fechaLimite)){                
                     alert("La fecha limite debe ser al menos un dia mas que la actual");
@@ -195,11 +198,11 @@
                     if (guardar){
                         insertarNuevoPedido = "http://" + ruta + "/insertarNuevoPedido.php";
                         $.getJSON(insertarNuevoPedido, {prioridad:prioridad,fechaLimite:fechaLimite,local:local,usuario:usuario,productos:productos})
-                        
+
                         logNuevoPedido = "http://" + ruta + "/logNuevoPedido.php";
 
                         $.getJSON(logNuevoPedido, {usuario:usuario});
-                        
+
                         setTimeout(desaparecerAtras, 200);
                     }
                 }
@@ -210,7 +213,7 @@
         
         function formatearFecha(fecha){
             var array = fecha.split("/");
-            var resultado = "";
+//            var resultado = "";
             var i = 0;
             for (i = array.length - 1  ; i > 0 ; i--){
                 resultado += array[i] + "-";
